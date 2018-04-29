@@ -1,0 +1,311 @@
+---
+
+# default role
+role: default
+
+# define the filebucket
+filebucket:
+  server: 'puppet'
+  path: false
+
+# global puppet master server setting
+puppetserver: 'puppet'
+
+# All python systems should install virtualenv, even if not in use
+python::virtualenv: present
+# python::dev is required by virtualenv
+python::dev: present
+
+# force IUS version of git globally
+git::package_name: 'git2u'
+
+# common hosts config
+hosts::enable_ipv6_localhost: false
+hosts::enable_fqdn_entry: false
+# do not allow unmanaged hosts entries
+hosts::purge_hosts: true
+
+# NTP configuration
+# basic self only (aka client)
+ntp::servers:
+  - '0.centos.pool.ntp.org'
+  - '1.centos.pool.ntp.org'
+  - '2.centos.pool.ntp.org'
+  - '3.centos.pool.ntp.org'
+ntp::restrict:
+  - '127.0.0.1'
+
+# common nginx configuration
+nginx::config::confd_purge: true
+nginx::config::vhost_purge: true
+
+# nsswitch defaults to sudoers using 'files sss' but sss is not installed
+# by default
+nsswitch::sudoers: 'files'
+
+# default option tree for saz-ssh
+
+# sshd_config
+#
+# sshd:
+#   storeconfigs_enabled: true
+#   options:
+#     ChallengeResponseAuthentication: 'no'
+#     X11Forwarding: 'yes'
+#     PrintMotd: 'no'
+#     AcceptEnv: 'LANG LC_*'
+#     Subsystem: "sftp ${sftp_server_path}"
+#     UsePAM: 'yes'
+
+
+# ssh_config
+#
+# ssh:
+#   storeconfigs_enabled: true
+#   options:
+#     - 'Host *':
+#         SendEnv: 'LANG LC_*'
+#         HashKnownHosts: yes
+
+#  NOTE: ${sftp_server_path} resolves to the default for a given host OS
+
+# Set all unknown defaults and differing defaults
+#
+# sshd:
+#   storeconfigs_enabled: false
+#   options:
+#     Protocol: 2
+#     Port:
+#       - 22
+#     PermitRootLogin: 'forced-commands-only'
+#     AuthorizedKeysFile: '.ssh/authorized_keys'
+#     PasswordAuthentication: 'no'
+#     GSSAPIAuthentication: 'yes'
+#     GSSAPICleanupCredentials: 'yes'
+#     AcceptEnv: 'LANG LC_* XMODIFIERS'
+
+ssh::server::storeconfigs_enabled: false
+ssh::server::options:
+  Protocol: 2
+  Port:
+    - 22
+  PermitRootLogin: 'forced-commands-only'
+  AuthorizedKeysFile: '.ssh/authorized_keys'
+  PasswordAuthentication: 'no'
+  GSSAPIAuthentication: 'no'
+  AcceptEnv: 'LANG LC_* XMODIFIERS'
+
+# Migrate to just using module ssh base interface instead of directected
+# server / client
+
+ssh::storeconfigs_enabled: false
+ssh::server_options:
+  Protocol: 2
+  Port:
+    - 22
+  PermitRootLogin: 'forced-commands-only'
+  AuthorizedKeysFile: '.ssh/authorized_keys'
+  PasswordAuthentication: 'no'
+  GSSAPIAuthentication: 'no'
+  AcceptEnv: 'LANG LC_* XMODIFIERS'
+
+# global ssh client options (ssh/ssh_config)
+#
+# RH defaults are:
+# Host *
+#   GSSAPIAuthentication yes
+#   ForwardX11Trusted yes
+#   SendEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+#   SendEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+#   SendEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+#   SendEnv XMODIFIERS
+ssh::client_options:
+  'Host *':
+    SendEnv: 'LANG LC_*'
+    ForwardX11Trusted: 'no'
+    GSSAPIAuthentication: 'no'
+    ServerAliveInterval: '10'
+    UseRoaming: 'no'
+
+# sudo config
+sudo::configs:
+  wheel:
+    content: '%wheel ALL=(ALL) ALL'
+
+# configure to allow all users onto the system via pam which is the
+# normal system default
+pam::allowed_users: 'ALL'
+
+# Mail configuration
+# set configurerelay to false to not configure the default relay
+# if false then postfix::conf needs to be built up
+#
+# configurerelay: true
+#
+# default relay configuration
+#
+# postfix::relay::sender_hostname: "%{::hostname}.bardicgrove.org"
+# postfix::relay::masquerade_domains: 'bardicgrove.org'
+#
+# Mail configuration
+# By default all systems are considered "satellite" meaning that they
+# relay their mail to another system that is configured as mta
+# NOTE: mta & satellite flags are mutually exclusive. One _must_ be set
+# to true and one _must_ be set to false or the postfix module isn't
+# going to work poperly
+# NOTE: a relayhost _must_ be defined. It must be defined as a proper
+# relay configuration _or_ the special keyword 'direct' which should in
+#
+# general only be used on systems configured as mta
+# postfix::inet_interfaces: 'localhost'
+# postfix::mta: false
+# postfix::satellite: true
+# postfix::root_mail_recipient: 'root@mail.bardicgrove.org'
+#
+
+# pin rsyslog -- module default is to always install latest but this can
+# have issues due to a) unexpected upgrades and b) problems with yum
+# when there is unexpected extraneous output from check-status
+rsyslog::package_status: 'installed'
+
+# Do not manage auditd service because camptocamp/selinux module will conlict
+auditd::manage_service: false
+
+# Mcollective / rabbitmq defaults for puppet4
+# mcollective::manage_packages: false
+# mcollective::confdir: '/etc/puppetlabs/mcollective'
+# mcollective::core_libdir: '/opt/puppetlabs/mcollective/plugins'
+# mcollective::site_libdir: '/usr/local/libexec/mcollective/mcollective'
+# mcollective::connector: 'rabbitmq'
+# erlang::epel_enable: true
+# rabbitmq::version: '3.3.5-4'
+# rabbitmq::manage_repo: false
+# rabbitmq::package_provider: 'yum'
+
+# manage "common user" accounts
+# setup a temporary user account until such time as I get an IPA or LDAP
+# configuration in play
+users_common:
+  tmpadmin:
+    ensure: present
+    uid: 700
+    comment: Temporary Bootstrapping Admin
+    managehome: true
+    home: /home/tmpadmin
+    shell: /bin/bash
+    groups: wheel
+    password: ENC[GPG,hQEMA8SoCjunVJylAQf/Wf/0bjiqkWrc3+OMfUWwF0UtYQDExunXn8elPVXJP3pGf+EwaktO9MrtGg/4tL1mAzEQjkmN2ECgLE9kYVxXWE8L236Whh1w2DL14BxX9u5Ur9meFeWGnhmh57aqo3vL5BBsWnl+bqy61JuAvUpIoh7kqEcD5IRuxoMpmgean5Er+Qq9mmyRIdMeTZgoJfEA0KANFjAAmUmHtQ/K/K5GPNAYiFyxj6NB+ILDXRu4pgpRr3/DkNC1KUJSZ6e85abcIZgM2XAvZdJcJDRspLdG+OdePSc7x7439xJ3svx4s4tgy5XQ95JbS2fQ62oF4zh9+ip7ZnCBVf+lXTF1yttOWoUCDAO027iJYMHOAwEP/3zzAI/8/EpnbccZZWIvnCLe14UPafrC4JQ9rY3tJo+hUm99O9+ra8bzG9A8HRDcW11WsSB9vIxajlig8zsd9GIyud/HAs/+SKGZ2IgmVaITvnrMVOD2LDE4ONOzvUSb9YnZLq/fkSaErY/ET4DG5mYap3D3iWFBObUJqjK5qsl45Vs7fFnuP3YkmT640TuY1C5SONxla6J0pmcsmpC4pkpczPIKWXTBqKDcAWgAU63/h6qES4XklEpJFOy8sTuiHrgfAO7Pl0ONXy77EH9ChjCFqB3vt2j44BjhEaNrkq4It43cE1kM9lDsTXGg4KFFVyF3k3rB6cDaU0W83d8JtHi+5i03TMLHCsG39JMxjAM4ps4LA7aFJQKOGYPeAYTUkR1jHKZvMMysDJRSmUkATRsmiDqWDxfYr5BuoEh9ZvqQMzqDDBnGtmtDzJ2pbmkorj9rox5lteLpXoSn5ah6tWABM+X91mRTfjwCYHUfB6KaIozPQMu2gk5MUcQ1uxtQ91XljsYVd7O+MBZjaeC20SCngHmEbpIjSUK0x+oLaC7swdSOktwC+dBbP1xivyHgtICttapIy9UN1K3HLYLtkZzVln5F8P+aqEknb3vla+6wNGQO8FrUaLKo35BpzO/UucHrgtO7ZyXc9Vxj93MZiL1QB9Ihnbw9TJ0JQU7wibKa0qUBjhNP1603ES9MPXm7qAcefDBGWkecvgHwywPOMxwv1C5/Zej0N6/1STAbwAALWJOl1xe+j/cVoODrhzZMaeqTyQlQyE+s46NjFBMoSQBPyRrFnqEDr0d5TD0ragXy3cbJAvwIC+EsmphYz26hZUfsNkX2sRrrhddSYWSsRtwYj8b3XQ6vEvJwS5D0f9MlxjGBt1sL+WBeYseqpH+qZUomfR9R7AA=]
+    ssh_authorized_keys:
+      tykeal@bardicgrove.org:
+        type: 'ssh-rsa'
+        key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCv5BzD+/7hXdODNFHivSmVdOVr3nQaQPebRc/ebXdBPjgHxb3l+odx85H/0A5GnMbJUTBgiOSoRpr5WejV2H30qTg5SduEKvpetGpofg3C07w5VTdGRGguGT2m4jS06OmO/lgFaYzKGZZ+/Yu7VQmu5t2ZUqmTSp/fLYhYSQ9bulOmOHwnJHT4KSsrZaIZV+ERF/mooeaQyZwupZhwgrgdOkAX+Bcy50fNrI/EZJET+WmX0VJV0hCQd2kzOzrONb4JZuFMY0Ks+VvIbyJTyzCik4WRwUl/Jp+jp13SZhOngxe2V6O+cYlqtHqgmP5yI+KMadB6UMNZVdChLf6T+naB'
+
+# sysctl configuration
+# we want to purge any sysctl knob not managed by puppet
+sysctl::base::purge: true
+# allow us to do layered value overwrites
+sysctl::base::hiera_merge_values: true
+# NOTE: some of these values are _not_ the defaults on EL5-7
+sysctl::base::values:
+  kernel.sysrq:
+    value: 0
+  kernel.core_uses_pid:
+    value: 1
+  kernel.msgmnb:
+    value: 65536
+  kernel.msgmax:
+    value: 65536
+  kernel.shmall:
+    value: 4294967296
+  kernel.shmmax:
+    value: 68719476736
+  net.ipv4.ip_forward:
+    value: 0
+  net.ipv4.conf.default.rp_filter:
+    value: 1
+  net.ipv4.conf.default.accept_source_route:
+    value: 0
+  net.ipv4.tcp_syncookies:
+    value: 1
+
+# rkhunter configuration
+# Please look over the params file
+# https://github.com/mmz-srf/puppet-rkhunter/blob/develop/manifests/params.pp
+# for information on the default settings. If you need to override / add
+# a whitelist entry you will need to fully specify the array of checks
+# in your higher level hiera
+#
+# The default for EL systems is unset, we want this as
+# forced-commands-only in our environment
+rkhunter::allow_ssh_root_user: 'forced-commands-only'
+
+# default resolv_conf setup (each $domain should set this in their
+# common.yaml) this is just a failsafe
+resolv_conf::nameservers:
+  - 8.8.8.8
+  - 8.8.4.4
+resolv_conf::options:
+  - 'timeout:2'
+resolv_conf::searchpath: "%{::domain}"
+
+# MONITORING / nagios / nrpe
+# path to the nagios plugins for use as a lookup in nrpe
+nagios_plugin_dir: '/usr/lib64/nagios/plugins'
+
+nrpe::purge: true
+nrpe::recurse: true
+
+nrpe::commands:
+  'check_conntrack':
+    'command': "%{hiera('nagios_plugin_dir')}/check_conntrack -w 70 -c 90"
+  'check_home':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 20% -c 5% -p /home"
+  'check_opt':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 20% -c 10% -p /opt"
+  'check_puppet':
+    'command': "%{hiera('nagios_plugin_dir')}/check_file_age -w 3900 -c 604800 /opt/puppetlabs/puppet/cache/state/state.yaml"
+  'check_root':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 15% -c 5% -p /"
+  'check_tmp':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 25% -c 10% -p /tmp"
+  'check_srv':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 15% -c 5% -p /srv"
+  'check_usr':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 15% -c 10% -p /usr"
+  'check_var':
+    'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 15% -c 5% -p /var"
+  'check_zombie_procs':
+    'command': "%{hiera('nagios_plugin_dir')}/check_procs -w 5 -c 10 -s Z"
+
+# SSL CA information (certs should be done at the domain level to be
+# able to be dealt with decently using eyaml encryption)
+sslmgmt::ca:
+  lets-encrypt-x3-cross-signed: |
+                                -----BEGIN CERTIFICATE-----
+                                MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc2oLheynCDANBgkqhkiG9w0BAQsFADA/
+                                MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT
+                                DkRTVCBSb290IENBIFgzMB4XDTE2MDMxNzE2NDA0NloXDTIxMDMxNzE2NDA0Nlow
+                                SjELMAkGA1UEBhMCVVMxFjAUBgNVBAoTDUxldCdzIEVuY3J5cHQxIzAhBgNVBAMT
+                                GkxldCdzIEVuY3J5cHQgQXV0aG9yaXR5IFgzMIIBIjANBgkqhkiG9w0BAQEFAAOC
+                                AQ8AMIIBCgKCAQEAnNMM8FrlLke3cl03g7NoYzDq1zUmGSXhvb418XCSL7e4S0EF
+                                q6meNQhY7LEqxGiHC6PjdeTm86dicbp5gWAf15Gan/PQeGdxyGkOlZHP/uaZ6WA8
+                                SMx+yk13EiSdRxta67nsHjcAHJyse6cF6s5K671B5TaYucv9bTyWaN8jKkKQDIZ0
+                                Z8h/pZq4UmEUEz9l6YKHy9v6Dlb2honzhT+Xhq+w3Brvaw2VFn3EK6BlspkENnWA
+                                a6xK8xuQSXgvopZPKiAlKQTGdMDQMc2PMTiVFrqoM7hD8bEfwzB/onkxEz0tNvjj
+                                /PIzark5McWvxI0NHWQWM6r6hCm21AvA2H3DkwIDAQABo4IBfTCCAXkwEgYDVR0T
+                                AQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwfwYIKwYBBQUHAQEEczBxMDIG
+                                CCsGAQUFBzABhiZodHRwOi8vaXNyZy50cnVzdGlkLm9jc3AuaWRlbnRydXN0LmNv
+                                bTA7BggrBgEFBQcwAoYvaHR0cDovL2FwcHMuaWRlbnRydXN0LmNvbS9yb290cy9k
+                                c3Ryb290Y2F4My5wN2MwHwYDVR0jBBgwFoAUxKexpHsscfrb4UuQdf/EFWCFiRAw
+                                VAYDVR0gBE0wSzAIBgZngQwBAgEwPwYLKwYBBAGC3xMBAQEwMDAuBggrBgEFBQcC
+                                ARYiaHR0cDovL2Nwcy5yb290LXgxLmxldHNlbmNyeXB0Lm9yZzA8BgNVHR8ENTAz
+                                MDGgL6AthitodHRwOi8vY3JsLmlkZW50cnVzdC5jb20vRFNUUk9PVENBWDNDUkwu
+                                Y3JsMB0GA1UdDgQWBBSoSmpjBH3duubRObemRWXv86jsoTANBgkqhkiG9w0BAQsF
+                                AAOCAQEA3TPXEfNjWDjdGBX7CVW+dla5cEilaUcne8IkCJLxWh9KEik3JHRRHGJo
+                                uM2VcGfl96S8TihRzZvoroed6ti6WqEBmtzw3Wodatg+VyOeph4EYpr/1wXKtx8/
+                                wApIvJSwtmVi4MFU5aMqrSDE6ea73Mj2tcMyo5jMd6jmeWUHK8so/joWUoHOUgwu
+                                X4Po1QYz+3dszkDqMp4fklxBwXRsW10KXzPMTZ+sOPAveyxindmjkW8lGy+QsRlG
+                                PfZ+G6Z6h7mjem0Y+iWlkYcV4PIWL1iwBi8saCbGS5jN2p8M+X+Q7UNKEkROb3N6
+                                KOqkqm57TH2H3eDJAkSnh6/DNFu0Qg==
+                                -----END CERTIFICATE-----
+# vim: ts=2 sw=2 sts=2 et :
