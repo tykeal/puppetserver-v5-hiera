@@ -1,0 +1,7 @@
+---
+# local hosts entries (needed for now)
+hosts::host_entries:
+  'puppet.yul.bardicgrove.org':
+    ip: '10.5.0.7'
+    host_aliases:
+      - 'puppet'
