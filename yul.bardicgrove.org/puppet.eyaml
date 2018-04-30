@@ -1,2 +1,3 @@
 ---
 hosts::enable_fqdn_entry: true
+hosts::purge_hosts: false
