@@ -1,3 +1,16 @@
 ---
+role: role::puppetserver
+
 hosts::enable_fqdn_entry: true
 hosts::purge_hosts: false
+
+# r10k configuration
+r10k::sources:
+  hiera:
+    basedir: /etc/puppetlabs/code/hieradata
+    prefix: false
+    remote: https://github.com/tykeal/puppetserver-v5-hiera.git
+  puppet:
+    basedir: /etc/puppetlabs/code/environments
+    prefix: false
+    remote: https://github.com/tykeal/puppetserver-v5-main.git
