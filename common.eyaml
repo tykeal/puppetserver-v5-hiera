@@ -11,6 +11,11 @@ filebucket:
 # global puppet master server setting
 puppetserver: 'puppet'
 
+# global (main) puppet settings
+puppet::main:
+  # force the path for puppet to also include the puppetlabs bin dirs
+  path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin'
+
 # All python systems should install virtualenv, even if not in use
 python::virtualenv: present
 # python::dev is required by virtualenv
