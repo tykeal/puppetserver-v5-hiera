@@ -14,6 +14,7 @@ puppetserver: 'puppet'
 # global (main) puppet settings
 puppet::main:
   # force the path for puppet to also include the puppetlabs bin dirs
+  # yamllint disable-line rule:line-length
   path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin'
 
 # All python systems should install virtualenv, even if not in use
@@ -137,9 +138,41 @@ sudo::configs:
   wheel:
     content: '%wheel ALL=(ALL) ALL'
 
+# PAM configuration
+
 # configure to allow all users onto the system via pam which is the
 # normal system default
 pam::allowed_users: 'ALL'
+
+# force limits.d to purge (good hygiene)
+pam::limits::purge_limits_dir: true
+
+# do hiera merging for limits fragments
+pam::limits_fragments_hiera_merge: true
+
+# Default EL7 pam limits
+pam::limits_fragments:
+  '20-nproc':
+    list:
+      - '*    soft nproc 4096'
+      - 'root soft nproc unlimited'
+
+# ghoneycutt/pam has a bug on EL7 where it uses the wrong default password
+# configuration lines
+# see: https://github.com/ghoneycutt/puppet-module-pam/issues/166
+pam::pam_password_password_lines:
+  # yamllint disable rule:line-length
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type='
+  - 'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok'
+  - 'password    required      pam_deny.so'
+  # yamllint enable
+
+pam::system_auth_ac_password_lines:
+  # yamllint disable rule:line-length
+  - 'password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type='
+  - 'password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok'
+  - 'password    required      pam_deny.so'
+  # yamllint enable
 
 # Mail configuration
 # set configurerelay to false to not configure the default relay
@@ -199,10 +232,12 @@ users_common:
     home: /home/tmpadmin
     shell: /bin/bash
     groups: wheel
+    # yamllint disable-line rule:line-length
     password: ENC[GPG,hQEMA8SoCjunVJylAQf/Wf/0bjiqkWrc3+OMfUWwF0UtYQDExunXn8elPVXJP3pGf+EwaktO9MrtGg/4tL1mAzEQjkmN2ECgLE9kYVxXWE8L236Whh1w2DL14BxX9u5Ur9meFeWGnhmh57aqo3vL5BBsWnl+bqy61JuAvUpIoh7kqEcD5IRuxoMpmgean5Er+Qq9mmyRIdMeTZgoJfEA0KANFjAAmUmHtQ/K/K5GPNAYiFyxj6NB+ILDXRu4pgpRr3/DkNC1KUJSZ6e85abcIZgM2XAvZdJcJDRspLdG+OdePSc7x7439xJ3svx4s4tgy5XQ95JbS2fQ62oF4zh9+ip7ZnCBVf+lXTF1yttOWoUCDAO027iJYMHOAwEP/3zzAI/8/EpnbccZZWIvnCLe14UPafrC4JQ9rY3tJo+hUm99O9+ra8bzG9A8HRDcW11WsSB9vIxajlig8zsd9GIyud/HAs/+SKGZ2IgmVaITvnrMVOD2LDE4ONOzvUSb9YnZLq/fkSaErY/ET4DG5mYap3D3iWFBObUJqjK5qsl45Vs7fFnuP3YkmT640TuY1C5SONxla6J0pmcsmpC4pkpczPIKWXTBqKDcAWgAU63/h6qES4XklEpJFOy8sTuiHrgfAO7Pl0ONXy77EH9ChjCFqB3vt2j44BjhEaNrkq4It43cE1kM9lDsTXGg4KFFVyF3k3rB6cDaU0W83d8JtHi+5i03TMLHCsG39JMxjAM4ps4LA7aFJQKOGYPeAYTUkR1jHKZvMMysDJRSmUkATRsmiDqWDxfYr5BuoEh9ZvqQMzqDDBnGtmtDzJ2pbmkorj9rox5lteLpXoSn5ah6tWABM+X91mRTfjwCYHUfB6KaIozPQMu2gk5MUcQ1uxtQ91XljsYVd7O+MBZjaeC20SCngHmEbpIjSUK0x+oLaC7swdSOktwC+dBbP1xivyHgtICttapIy9UN1K3HLYLtkZzVln5F8P+aqEknb3vla+6wNGQO8FrUaLKo35BpzO/UucHrgtO7ZyXc9Vxj93MZiL1QB9Ihnbw9TJ0JQU7wibKa0qUBjhNP1603ES9MPXm7qAcefDBGWkecvgHwywPOMxwv1C5/Zej0N6/1STAbwAALWJOl1xe+j/cVoODrhzZMaeqTyQlQyE+s46NjFBMoSQBPyRrFnqEDr0d5TD0ragXy3cbJAvwIC+EsmphYz26hZUfsNkX2sRrrhddSYWSsRtwYj8b3XQ6vEvJwS5D0f9MlxjGBt1sL+WBeYseqpH+qZUomfR9R7AA=]
     ssh_authorized_keys:
       tykeal@bardicgrove.org:
         type: 'ssh-rsa'
+        # yamllint disable-line rule:line-length
         key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCv5BzD+/7hXdODNFHivSmVdOVr3nQaQPebRc/ebXdBPjgHxb3l+odx85H/0A5GnMbJUTBgiOSoRpr5WejV2H30qTg5SduEKvpetGpofg3C07w5VTdGRGguGT2m4jS06OmO/lgFaYzKGZZ+/Yu7VQmu5t2ZUqmTSp/fLYhYSQ9bulOmOHwnJHT4KSsrZaIZV+ERF/mooeaQyZwupZhwgrgdOkAX+Bcy50fNrI/EZJET+WmX0VJV0hCQd2kzOzrONb4JZuFMY0Ks+VvIbyJTyzCik4WRwUl/Jp+jp13SZhOngxe2V6O+cYlqtHqgmP5yI+KMadB6UMNZVdChLf6T+naB'
 
 # sysctl configuration
@@ -268,6 +303,7 @@ nrpe::commands:
   'check_opt':
     'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 20% -c 10% -p /opt"
   'check_puppet':
+    # yamllint disable-line rule:line-length
     'command': "%{hiera('nagios_plugin_dir')}/check_file_age -w 3900 -c 604800 /opt/puppetlabs/puppet/cache/state/state.yaml"
   'check_root':
     'command': "%{hiera('nagios_plugin_dir')}/check_disk -w 15% -c 5% -p /"
