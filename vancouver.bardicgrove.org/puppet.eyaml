@@ -19,3 +19,6 @@ r10k::sources:
     basedir: /etc/puppetlabs/code/environments
     prefix: false
     remote: https://github.com/tykeal/puppetserver-v5-main.git
+
+# puppetlabs/postgresql is mis-determining the server package name, force override
+postgresql::server::package_name: postgresql-server
