@@ -23,3 +23,4 @@ r10k::sources:
 # puppetlabs/postgresql is mis-determining the server package name, force override
 postgresql::server::package_name: postgresql-server
 postgresql::server::datadir: /var/lib/pgsql/data
+postgresql::server::initdb_path: /usr/bin/initdb
