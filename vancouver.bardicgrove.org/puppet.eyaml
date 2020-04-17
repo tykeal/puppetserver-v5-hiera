@@ -1,12 +1,15 @@
 ---
 # role: role::puppetserver
 
-hosts::enable_fqdn_entry: true
-hosts::purge_hosts: false
+# hosts::purge_hosts: false
 hosts::localhost_aliases:
   - localhost
   - localhost4
   - localhost4.localdomain4
+  - puppet
+hosts::localhost6_aliases:
+  - localhost6
+  - localhost6.localdomain6
   - puppet
 
 # r10k configuration

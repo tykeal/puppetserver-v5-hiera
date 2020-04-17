@@ -26,8 +26,8 @@ python::dev: present
 # git::package_name: 'git2u'
 
 # common hosts config
-hosts::enable_ipv6_localhost: false
-hosts::enable_fqdn_entry: false
+hosts::enable_ipv6_localhost: true
+hosts::enable_fqdn_entry: true
 # do not allow unmanaged hosts entries
 hosts::purge_hosts: true
 
