@@ -22,6 +22,9 @@ r10k::sources:
     prefix: false
     remote: https://github.com/tykeal/puppetserver-v5-main.git
 
+# puppetdb pgsql overrides
+puppetdb::database::postgresql::manage_package_repo: false
+
 # puppetlabs/postgresql is mis-determining the server package name on el8,
 # force override
 
