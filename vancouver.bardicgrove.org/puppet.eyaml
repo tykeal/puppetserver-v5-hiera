@@ -1,5 +1,5 @@
 ---
-role: role::puppetserver
+# role: role::puppetserver
 
 hosts::enable_fqdn_entry: true
 hosts::purge_hosts: false
@@ -20,8 +20,10 @@ r10k::sources:
     prefix: false
     remote: https://github.com/tykeal/puppetserver-v5-main.git
 
-# puppetlabs/postgresql is mis-determining the server package name, force override
-postgresql::server::package_name: postgresql-server
-postgresql::server::datadir: /var/lib/pgsql/data
-postgresql::server::initdb_path: /usr/bin/initdb
-postgresql::server::contrib::package_name: postgresql-contrib
+# puppetlabs/postgresql is mis-determining the server package name on el8,
+# force override
+
+# postgresql::server::package_name: postgresql-server
+# postgresql::server::datadir: /var/lib/pgsql/data
+# postgresql::server::initdb_path: /usr/bin/initdb
+# postgresql::server::contrib::package_name: postgresql-contrib
