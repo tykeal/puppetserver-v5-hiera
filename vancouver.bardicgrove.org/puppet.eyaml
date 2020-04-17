@@ -1,7 +1,6 @@
 ---
-# role: role::puppetserver
+role: role::puppetserver
 
-# hosts::purge_hosts: false
 hosts::localhost_aliases:
   - localhost
   - localhost4
