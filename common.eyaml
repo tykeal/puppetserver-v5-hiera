@@ -41,6 +41,7 @@ ntp::servers:
 ntp::restrict:
   - '127.0.0.1'
 
+puppetdb::manage_package_repo: false
 postgresql::globals::manage_package_repo: false
 
 # common nginx configuration
