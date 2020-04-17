@@ -41,6 +41,8 @@ ntp::servers:
 ntp::restrict:
   - '127.0.0.1'
 
+postgresql::globals::manage_package_repo: false
+
 # common nginx configuration
 # nginx::config::confd_purge: true
 # nginx::config::vhost_purge: true
