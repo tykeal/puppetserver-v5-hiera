@@ -26,8 +26,5 @@ r10k::sources:
 puppetdb::database::postgresql::manage_package_repo: false
 puppetdb::database::postgresql::postgres_version: '10'
 
-# set puppetdb available protocols
-puppetdb::params::::ssl_protocols: 'TLSv1.2'
-
 # yamllint disable-line rule:line-length
 puppetdb::jdbc_ssl_properties: '?ssl=true&sslrootcert=/etc/puppetlabs/puppet/ssl/certs/ca.pem'
