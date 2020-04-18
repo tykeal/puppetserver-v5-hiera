@@ -27,4 +27,4 @@ puppetdb::database::postgresql::manage_package_repo: false
 puppetdb::database::postgresql::postgres_version: '10'
 
 # yamllint disable-line rule:line-length
- puppetdb::jdbc_ssl_properties: '?ssl=true&sslrootcert=/etc/puppetlabs/puppet/ssl/certs/ca.pem'
+puppetdb::jdbc_ssl_properties: '?ssl=true&sslrootcert=/etc/puppetlabs/puppet/ssl/certs/ca.pem'
