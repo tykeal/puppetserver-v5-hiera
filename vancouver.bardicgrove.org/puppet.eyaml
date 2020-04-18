@@ -26,8 +26,5 @@ r10k::sources:
 puppetdb::database::postgresql::manage_package_repo: false
 puppetdb::database::postgresql::postgres_version: '10'
 
-# force puppetdb to bind to IPv4 only
-puppetdb::params::ssl_listen_address: '10.0.1.40'
-
 # yamllint disable-line rule:line-length
 puppetdb::jdbc_ssl_properties: '?ssl=true&sslrootcert=/etc/puppetlabs/puppet/ssl/certs/ca.pem'
