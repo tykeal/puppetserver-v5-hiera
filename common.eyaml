@@ -22,6 +22,11 @@ python::virtualenv: present
 # python::dev is required by virtualenv
 python::dev: present
 
+# We force install git everywhere, this causes problems for dehydrated
+# Override the package list without git
+dehydrated::packages:
+  - 'openssl'
+
 # force IUS version of git globally
 # git::package_name: 'git2u'
 
