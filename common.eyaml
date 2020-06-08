@@ -22,6 +22,11 @@ python::virtualenv: present
 # python::dev is required by virtualenv
 python::dev: present
 
+# acme / letsencrypt
+# Do not manage packages, we already install the dependencies and the module
+# doesn't do it in a retry safe manner
+acme::manage_packages: False
+
 # common hosts config
 hosts::enable_ipv6_localhost: true
 hosts::enable_fqdn_entry: true
