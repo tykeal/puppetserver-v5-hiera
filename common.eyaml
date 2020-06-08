@@ -25,7 +25,12 @@ python::dev: present
 # acme / letsencrypt
 # Do not manage packages, we already install the dependencies and the module
 # doesn't do it in a retry safe manner
-acme::manage_packages: False
+acme::manage_packages: false
+
+# configure the default acme account and profile to use
+# yamllint disable-line rule:line-length
+acme::certificate::use_account: ENC[GPG,hQEMA4nUKMUJFtKCAQgAsp+tGG+GGIVcBjCMqGAEms5e0a6J7p0ZWMjRCzGcQ7xvwtw4Y8rNgl5mr6K8S2TZT/FV7qQEYuWmE4PXKnp6K7Dr50+xR8eeUavA08+PXMjfQ9MOy5vf6johQMYen0jyXzAfoL27eDhenn0D78LR/3o77kyIEWaUbr/ir5p7aPiy/cuBYNNgFWR5DejPgf1zz1tyTeHNkTnx55eTonow+GF6nP9L8Y9BlXIdAio2pweWuSsi/bOsF1iPUHUfhwLCm5porZq/HLNz2r7K866cfrsC+JM+F2MWfGLQUrcjjemFGpMB8kyL6f30PSznNZrnXiEYJLZQ1PRprZZPJc1WMYUBDAPEqAo7p1ScpQEH/21Z64b4FoJGpBBr7QwEK9xxRcEIcuhZVo2ifr8UbaedpyFwfivA8G15NXWq/0sERvlZv169IuaHbZE8rFZKU9ORMvQeCfNIuuN5O+wyzznp6Qi3WPVL/5aN637eGBSfQnHMLZrMhS/guAqWCy+EeXU4feQMel0Dy1Cp4MWmlqCzLHpNrkAcAedhQrrIjKJS1gAptGpdp2DJDGHl4RGHqX9LrQGWYGwAmWY3xMHwdHwFy/jTIFlpBPLxAMLxRXijmj4+3VQGSIcuQzLkJF2LvsxPwdZKBp4Zms4E49o28bsh25sooVaYu8WyZ5t8b9vUiU0in0vQYDzo3P58BlUvfAzSUgH4/OhhWu3Y6eigWJZOkTq2qiuXq1qzKORveOAF/4CdhMjHK77Hj/JQgsLxfKEub++HT+MeGXwSgo43AX37uYEO/Vo/SFj90aDNvZy5V97rRXY=]
+acme::certificate::use_profile: dnsmadeeasy
 
 # common hosts config
 hosts::enable_ipv6_localhost: true
