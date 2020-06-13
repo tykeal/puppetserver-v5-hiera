@@ -37,6 +37,8 @@ hosts::enable_ipv6_localhost: true
 hosts::enable_fqdn_entry: true
 # do not allow unmanaged hosts entries
 hosts::purge_hosts: true
+# do not collect hosts entries
+hosts::collect_all: false
 
 # make sure that the puppet IPv6 is pushed everywhere
 hosts::host_entries:
