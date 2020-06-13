@@ -38,6 +38,13 @@ hosts::enable_fqdn_entry: true
 # do not allow unmanaged hosts entries
 hosts::purge_hosts: true
 
+# make sure that the puppet IPv6 is pushed everywhere
+hosts::host_entries:
+  'puppet.vancouver.bardicgrove.org':
+    ip: '2601:1c2:4f03:1a72:302c:8dcc:d490:b8c6'
+    host_aliases:
+      - 'puppet'
+
 # NTP configuration
 # basic self only (aka client)
 ntp::servers:
