@@ -1,2 +1,19 @@
 ---
 role: role::allinone
+
+dovecot::plugins:
+  - imap
+  - lmtp
+  - sieve
+dovecot::config:
+  protocols: imap sieve lmtp
+  hostname: 'mail.bardicgrove.org'
+dovecot::configs:
+  '10-auth':
+    disable_plaintext_auth: 'yes'
+    passdb:
+      driver: pam
+    userdb:
+      driver: pam
+  '10-ssl':
+    ssl: 'no'
