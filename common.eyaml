@@ -8,6 +8,9 @@ filebucket:
   server: 'puppet'
   path: false
 
+# firewall v6 should be running
+firewall::ensure_v6: 'running'
+
 # global puppet master server setting
 puppetserver: 'puppet'
 
