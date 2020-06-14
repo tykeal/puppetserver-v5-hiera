@@ -17,7 +17,7 @@ dovecot::configs:
     passdb:
       driver: pam
     userdb:
-      driver: pam
+      driver: passwd
   '10-ssl':
     ssl: 'required'
     ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
