@@ -7,9 +7,10 @@ acme::certificate::letsencrypt_ca: staging
 dovecot::plugins:
   - imap
   - lmtp
+  - pop3
   - sieve
 dovecot::config:
-  protocols: imap sieve lmtp
+  protocols: imap lmtp pop3 sieve
   hostname: 'mail.bardicgrove.org'
 dovecot::configs:
   '10-auth':
