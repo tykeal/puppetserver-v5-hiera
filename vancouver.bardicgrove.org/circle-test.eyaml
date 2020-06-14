@@ -1,6 +1,9 @@
 ---
 role: role::allinone
 
+# use letsencrypt staging for now
+acme::certificate::letsencrypt_ca: staging
+
 dovecot::plugins:
   - imap
   - lmtp
