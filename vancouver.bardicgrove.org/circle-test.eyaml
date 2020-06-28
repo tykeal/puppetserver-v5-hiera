@@ -61,7 +61,8 @@ opendkim::keys:
       - '*@bardicgrove.org'
 
 # spamassassin
-spamassassin::sa_update: true
-spamassassin::service_enabled: true
 spamassassin::pyzor_enabled: false
 spamassassin::razor_enabled: false
+spamassassin::sa_update: true
+spamassassin::service_enabled: true
+spamassassin::spamd_min_children: 1
