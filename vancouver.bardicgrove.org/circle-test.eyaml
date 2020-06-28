@@ -4,6 +4,31 @@ role: role::allinone
 # use letsencrypt staging for now
 acme::certificate::letsencrypt_ca: staging
 
+# clamav/freshclam
+clamavmilter::new_clamav_packages: true
+clamav::data::manage_package: true
+clamav::data::package_ensure: present
+clamav::data::package_name: clamav-data
+clamav::clamd::config: /etc/clamd.d/scan.conf
+clamav::clamd::package_name: clamd
+clamav::clamd::service_name: clamd@scan
+clamav::clamd::config::local_socket: '/var/run/clamd.scan/clamd.sock'
+clamav::clamd::config::logsyslog: 'yes'
+clamav::clamd::config::tcp_socket: 3310
+clamav::clamd::config::database_directory: /var/lib/clamav
+clamav::clamd::config::user: clamscan
+clamav::clamd::config::allow_supplementary_groups: 'yes'
+clamav::freshclam::manage_package: true
+clamav::freshclam::manage_sysconfig: true
+clamav::freshclam::package_ensure: present
+clamav::freshclam::package_name: clamav-update
+clamav::freshclam::config::database_directory: /var/lib/clamav
+clamav::freshclam::config::update_log_file: /var/log/clamav/freshclam.log
+clamav::freshclam::config::log_syslog: 'yes'
+clamav::freshclam::config::database_owner: clamscan
+clamav::freshclam::config::database_mirror: db.local.clamav.net
+
+# dovecot
 dovecot::plugins:
   - imap
   - lmtp
@@ -24,6 +49,7 @@ dovecot::configs:
     ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
     ssl_key: '</etc/acme.sh/keys/mail.bardicgrove.org/private.key'
 
+# opendkim
 opendkim::keys:
   - domain: bardicgrove.org
     selector: default
