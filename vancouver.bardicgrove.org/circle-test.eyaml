@@ -61,7 +61,7 @@ opendkim::keys:
       - '*@bardicgrove.org'
 
 # postfix
-postfix::mta: true
+postfix::use_dovecot_lda: true
 
 # spamassassin
 spamassassin::pyzor_enabled: false
