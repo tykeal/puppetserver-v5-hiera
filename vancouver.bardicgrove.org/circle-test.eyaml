@@ -60,6 +60,9 @@ opendkim::keys:
     signingdomains:
       - '*@bardicgrove.org'
 
+# postfix
+postfix::mta: true
+
 # spamassassin
 spamassassin::pyzor_enabled: false
 spamassassin::razor_enabled: false
