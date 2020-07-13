@@ -63,6 +63,7 @@ opendkim::keys:
 # postfix
 postfix::mta: true
 postfix::relayhost: direct
+postfix::smtp_listen: all
 postfix::use_dovecot_lda: true
 
 # spamassassin
