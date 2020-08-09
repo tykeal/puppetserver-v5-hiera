@@ -47,7 +47,7 @@ dovecot::configs:
   '10-master':
     default_process_limit: 200
     default_client_limit: 200
-    service_ltmp:
+    service_lmtp:
       unix_listener /var/spool/postfix/private/auth:
         user: postfix
         group: postfix
