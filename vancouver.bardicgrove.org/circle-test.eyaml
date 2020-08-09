@@ -107,6 +107,7 @@ postfix::use_dovecot_lda: true
 postfix::master_entries:
   # yamllint disable-line rule:line-length
   - 'spamassassin unix -     n       n     -         -       pipe user=spamassassin argv=/usr/bin/spamc -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}'
+postfix::master_submission: 'submission inet n - n - - smtpd'
 
 # spamassassin
 spamassassin::pyzor_enabled: false
