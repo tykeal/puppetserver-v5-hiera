@@ -48,7 +48,7 @@ dovecot::configs:
     default_process_limit: 200
     default_client_limit: 200
     service_ltmp:
-      unix_listener /var/spool/postfix/private/dovecot-lmtp:
+      unix_listener /var/spool/postfix/private/auth:
         user: postfix
         group: postfix
         mode: '0600'
@@ -69,6 +69,37 @@ opendkim::keys:
       - '*@bardicgrove.org'
 
 # postfix
+postfix::configs:
+  dovecot_destination_concurrency_limit:
+    value: '1'
+  dovecot_destination_recipient_limit:
+    value: '1'
+  home_mailbox:
+    value: 'Maildir/'
+  # We use ~20MB as the limit as _most_ major providers will reject mail much
+  # larger than this
+  message_size_limit:
+    value: '20480000'
+  myhostname:
+    value: 'smtp.bardicgrove.org'
+  recipient_delimiter:
+    value: '-'
+  smtpd_sasl_auth_enable:
+    value: 'yes'
+  smtpd_sasl_path:
+    value: private/auth
+  smtpd_sasl_security_options:
+    value: noanonymous, noplaintext
+  smtpd_sasl_tls_security_options:
+    value: noanonymous
+  smtpd_sasl_type:
+    value: dovecot
+  smtpd_tls_auth_only:
+    value: 'yes'
+  smtpd_tls_chain_files:
+    value: '/etc/acme.sh/keys/smtp.bardicgrove.org/fullchain_with_key.pem'
+  smtpd_tls_security_level:
+    value: may
 postfix::mta: true
 postfix::relayhost: direct
 postfix::smtp_listen: all
