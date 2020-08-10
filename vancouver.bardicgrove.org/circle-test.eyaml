@@ -98,6 +98,10 @@ postfix::configs:
     value: dovecot
   smtpd_tls_auth_only:
     value: 'yes'
+  smtp_tls_CAfile:
+    ensure: absent
+  smtp_tls_CApath:
+    ensure: absent
   smtpd_tls_cert_file:
     ensure: absent
   smtpd_tls_chain_files:
