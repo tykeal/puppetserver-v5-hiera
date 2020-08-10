@@ -98,8 +98,12 @@ postfix::configs:
     value: dovecot
   smtpd_tls_auth_only:
     value: 'yes'
+  smtpd_tls_cert_file:
+    value: ''
   smtpd_tls_chain_files:
     value: '/etc/acme.sh/keys/smtp.bardicgrove.org/fullchain_with_key.pem'
+  smtpd_tls_key_file:
+    value: ''
   smtpd_tls_security_level:
     value: may
 postfix::mta: true
