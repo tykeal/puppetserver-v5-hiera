@@ -103,12 +103,12 @@ postfix::configs:
   smtp_tls_CApath:
     ensure: absent
   smtpd_tls_cert_file:
-    ensure: /etc/acme.sh/certs/smtp.bardicgrove.org/fullchain.pem
+    value: /etc/acme.sh/certs/smtp.bardicgrove.org/fullchain.pem
   smtpd_tls_chain_files:
     ensure: absent
     value: '/etc/acme.sh/keys/smtp.bardicgrove.org/fullchain_with_key.pem'
   smtpd_tls_key_file:
-    ensure: /etc/acme.sh/keys/smtp.bardicgrove.org/private.key
+    value: /etc/acme.sh/keys/smtp.bardicgrove.org/private.key
   smtpd_tls_security_level:
     value: may
 postfix::mta: true
