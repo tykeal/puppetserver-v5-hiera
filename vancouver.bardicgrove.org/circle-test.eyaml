@@ -39,6 +39,7 @@ dovecot::config:
   hostname: 'mail.bardicgrove.org'
 dovecot::configs:
   '10-auth':
+    auth_mechanisms: plain login
     disable_plaintext_auth: 'yes'
     passdb:
       driver: pam
