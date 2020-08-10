@@ -48,11 +48,11 @@ dovecot::configs:
   '10-master':
     default_process_limit: 200
     default_client_limit: 1200
-    'service lmtp':
+    'service auth':
       unix_listener /var/spool/postfix/private/auth:
         user: postfix
         group: postfix
-        mode: '0600'
+        mode: '0660'
   '10-ssl':
     ssl: 'required'
     ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
