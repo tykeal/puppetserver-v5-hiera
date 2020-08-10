@@ -55,7 +55,7 @@ dovecot::configs:
   '10-ssl':
     ssl: 'required'
     ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
-    ssl_dh_parameters_length: 2048
+    ssl_dh: '</etc/pki/dovecot/private/dh.pem'
     ssl_key: '</etc/acme.sh/keys/mail.bardicgrove.org/private.key'
 
 # opendkim
