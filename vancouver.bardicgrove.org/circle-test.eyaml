@@ -66,6 +66,7 @@ dovecot::configs:
     ssl_key: '</etc/acme.sh/keys/mail.bardicgrove.org/private.key'
   '15-lda':
     recipient_delimiter: '-'
+    lda_mailbox_autosubscribe: 'yes'
   '20-lmtp':
     protocol lmtp:
       mail_plugins: sieve
