@@ -4,6 +4,14 @@ role: role::allinone
 # use letsencrypt staging for now
 acme::certificate::letsencrypt_ca: staging
 
+# msyql
+mysql::server::remove_default_accounts: true
+mysql::server::restart: true
+# yamllint disable rule:line-length
+mysql::server::root_password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/U1sImKYsUk2Kkrb0Xn702DyZ2C1ZmO8mDTEpOOotP3RaIoVRUUWOvcrZgm4PzJ7licZIAmFBTgGXVEr8Z0DwvykfpPMc+Zzv07qGLyhMSfjT2TXQaLPjRmAMH0yOUjF3WZegZPpurGPkEsCYmNdX8b0MlxX4Y/qFXoPspkGUdGgAKk6dZzS+HT5geubVTIgn6hQfGr3AvDMgNPnC8i80+tQDVXTJnuExTo9Fp0GywfQ1lJvNloeHoHv7a/jd5mXhHmbkJA/7njI96ConcYGUZ74d4oevm8L1X1SAERlenMV1fpgY3C6Mop+3XCHsC0xJ0Rahzvq0ATHEeuw9VVCRoYUBDAPEqAo7p1ScpQEH/AmZTrTttnnPmBAtJNr8l0IkBK1ZFhtZE5rRK2AXHGgv0ITOcvRrlZFkgxI5TTLRluHOQ9ta/6cm6t+OwmTEXAzzmAkjB0EVO30xuqe0yxtkT9lFx7YYs2NJlTTAZPpcTyaA5i3dbPS2EYyQAi0bh/ht7N3vPcH6GtJSsmiwA9UveEafoyBJ48bioUXEpE3Q4SSoyZ1NEiLN2O+60g1ZD/lgw6zwu3XVH7ZOw20scpAb5VbMNDX+AFQI/m0/mEFDrjy+skj+NW1uezlmfgMOkBxWER5p6cccgthMgX2M/6u9Frf/HE8fcs768nk3cCMmghrafO8dcPdWk+HTpXK8gLvSZQFE/0UzXwZ6cmIguvz0MEoR4DwOHQnSPpeH9Zqu+Ve/jISmCN/t1por5XykE85YIM1c3WFURrZoAw7a7aYqHhF0gqUEfEp92E5dJesaXyPFLnDeAipMEnKvIQwiAwEheuVUnXZ0]
+
+###### MAIL CONFIGURUATION #####
+
 # clamav/freshclam
 clamavmilter::new_clamav_packages: true
 clamav::data::manage_package: true
@@ -144,3 +152,5 @@ spamassassin::razor_enabled: false
 spamassassin::sa_update: true
 spamassassin::service_enabled: true
 spamassassin::spamd_min_children: 1
+
+###### / MAIL CONFIGURUATION #####
