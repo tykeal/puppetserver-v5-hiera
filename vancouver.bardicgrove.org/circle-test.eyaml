@@ -5,6 +5,7 @@ role: role::allinone
 acme::certificate::letsencrypt_ca: staging
 
 # msyql
+mysql::resourcetag: allinone
 mysql::server::remove_default_accounts: true
 mysql::server::restart: true
 # yamllint disable rule:line-length
@@ -154,3 +155,17 @@ spamassassin::service_enabled: true
 spamassassin::spamd_min_children: 1
 
 ###### / MAIL CONFIGURUATION #####
+
+### WEB ###
+
+php::fpm_user: nginx
+php::fpm_group: nginx
+
+# webmail
+roundcube::composer_manager: false
+roundcube::db_type: mysql
+# yamllint disable-line rule:line-length
+roundcube::db_password: GPG::DEC[WdJSYarACUZvbnGAhTXrOfs7wt4xVUSsbzlPp8MYV6]!
+roudbcube::db_resource_tag: allinone
+
+### WEB ###
