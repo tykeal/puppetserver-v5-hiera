@@ -188,5 +188,5 @@ roudbcube::db_resource_tag: allinone
 # selinux tunables #
 selinux::selbooleans:
   httpd_enable_homedirs:
-    persistent: true,
+    persistent: true
     value: 'on'
