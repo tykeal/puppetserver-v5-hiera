@@ -184,3 +184,9 @@ roundcube::db_password: GPG::DEC[WdJSYarACUZvbnGAhTXrOfs7wt4xVUSsbzlPp8MYV6]!
 roudbcube::db_resource_tag: allinone
 
 ### WEB ###
+
+# selinux tunables #
+selinux::selbooleans:
+  httpd_enable_homedirs:
+    persistent: true,
+    value: 'on'
