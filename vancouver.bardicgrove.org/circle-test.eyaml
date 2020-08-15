@@ -161,6 +161,7 @@ spamassassin::spamd_min_children: 1
 nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
     www_root: '/var/www/html'
+    ipv6_enable: true
 
 nginx::nginx_locations:
   'userContent':
