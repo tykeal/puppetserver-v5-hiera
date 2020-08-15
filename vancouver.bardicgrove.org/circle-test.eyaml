@@ -167,7 +167,7 @@ nginx::nginx_locations:
   'userContent':
     location: '~ ^/~(.+?)(/.*)?$'
     server: www.vancouver.bardicgrove.org
-    alias: '/home/$1/public_html$2'
+    location_alias: '/home/$1/public_html$2'
     index_files:
       - index.html
       - index.htm
