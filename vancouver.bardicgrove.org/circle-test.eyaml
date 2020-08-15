@@ -158,6 +158,20 @@ spamassassin::spamd_min_children: 1
 
 ### WEB ###
 
+nginx::nginx_servers:
+  'www.vancouver.bardicgrove.org':
+    www_root: '/var/www/html'
+
+nginx::nginx_locations:
+  'userContent':
+    location: '~ ^/~(.+?)(/.*)?$'
+    server: www.vancouver.bardicgrove.org
+    alias: '/home/$1/public_html$2'
+    index_files:
+      - index.html
+      - index.htm
+    autoindex: 'on'
+
 php::fpm_user: nginx
 php::fpm_group: nginx
 
