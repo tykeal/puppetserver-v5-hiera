@@ -177,6 +177,7 @@ php::fpm_user: nginx
 php::fpm_group: nginx
 
 # webmail
+roundcube::archive_provider: puppet
 roundcube::composer_manage: false
 roundcube::db_type: mysql
 # yamllint disable-line rule:line-length
