@@ -174,7 +174,16 @@ nginx::nginx_locations:
     autoindex: 'on'
 
 php::extensions:
+  gd:
+    package_prefix: php-
+    provider: dnf
   json:
+    package_prefix: php-
+    provider: dnf
+  ldap:
+    package_prefix: php-
+    provider: dnf
+  mbstring:
     package_prefix: php-
     provider: dnf
 php::fpm_user: nginx
