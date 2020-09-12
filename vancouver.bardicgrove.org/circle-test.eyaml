@@ -185,6 +185,7 @@ roundcube::db_password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/fganzoOHrmpqhbc7HI8NNDjw1NKS
 roundcube::db_resource_tag: allinone
 roundcube::install_dir: /opt/roundcube
 roundcube::package_dir: /var/cache/puppet-archives
+roundcube::process: nginx
 
 ### WEB ###
 
