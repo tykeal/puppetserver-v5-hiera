@@ -173,6 +173,10 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
 
+php::extensions:
+  json:
+    package_prefix: php-
+    provider: dnf
 php::fpm_user: nginx
 php::fpm_group: nginx
 
