@@ -4,11 +4,8 @@ role: role::allinone
 # use letsencrypt staging for now
 acme::certificate::letsencrypt_ca: staging
 acme::certificates:
-  www.vancouver.bardicgrove.org:
-    use_account: "%{lookup('acme::certificate::use_account')}"
-    use_profile: "%{lookup('acme::certificate::use_profile')}"
-    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
-  mail.vancouver.bardicgrove.org:
+  # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
+  'www.vancouver.bardicgrove.org webmail.vancouver.bardicgrove.org':
     use_account: "%{lookup('acme::certificate::use_account')}"
     use_profile: "%{lookup('acme::certificate::use_profile')}"
     letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
