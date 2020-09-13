@@ -172,7 +172,7 @@ nginx::nginx_servers:
     ipv6_enable: true
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
-    ssl_key: '/etc/acme.sh/keys/www.vancvouer.bardicgrove.org/privkey.pem'
+    ssl_key: '/etc/acme.sh/keys/www.vancvouer.bardicgrove.org/private.key'
     www_root: '/var/www/html'
 
 nginx::nginx_locations:
