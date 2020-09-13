@@ -169,8 +169,11 @@ spamassassin::spamd_min_children: 1
 
 nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
-    www_root: '/var/www/html'
     ipv6_enable: true
+    ssl: true
+    ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
+    ssl_key: '/etc/acme.sh/keys/www.vancvouer.bardicgrove.org/privkey.pem'
+    www_root: '/var/www/html'
 
 nginx::nginx_locations:
   'userContent':
@@ -181,6 +184,7 @@ nginx::nginx_locations:
       - index.html
       - index.htm
     autoindex: 'on'
+    ssl: true
 
 php::extensions:
   gd:
