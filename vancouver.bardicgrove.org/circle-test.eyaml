@@ -3,6 +3,15 @@ role: role::allinone
 
 # use letsencrypt staging for now
 acme::certificate::letsencrypt_ca: staging
+acme::certificates:
+  www.vancouver.bardicgrove.org:
+    use_account: "%{lookup('acme::certificate::use_account')}"
+    use_profile: "%{lookup('acme::certificate::use_profile')}"
+    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
+  mail.vancouver.bardicgrove.org:
+    use_account: "%{lookup('acme::certificate::use_account')}"
+    use_profile: "%{lookup('acme::certificate::use_profile')}"
+    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
 
 # msyql
 mysql::resourcetag: allinone
