@@ -198,11 +198,13 @@ nginx::nginx_locations:
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.vancouver.bardicgrove.org
-    location_deny: all
+    location_deny:
+      - all
   'rc-deny2':
     location: '~ ^/(config|temp|logs)/'
     server: webmail.vancouver.bardicgrove.org
-    location_deny: all
+    location_deny:
+      - all
   'rc-php':
     location: '~ \.php$'
     server: webmail.vancouver.bardicgrove.org
