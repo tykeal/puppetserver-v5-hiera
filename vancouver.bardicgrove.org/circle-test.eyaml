@@ -171,6 +171,12 @@ nginx::nginx_servers:
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
     www_root: '/var/www/html'
+  'webmail.vancouver.bardicgrove.org':
+    ipv6_enable: true
+    ssl: true
+    ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
+    ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
+    www_root': '/opt/roundcube/roundcubemail-1.4.4'
 
 nginx::nginx_locations:
   'userContent':
@@ -182,6 +188,32 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
     ssl: true
+  'rc-root':
+    location: '/'
+    server: webmail.vancouver.bardicgrove.org
+    try_files:
+      - '$uri'
+      - '$uri/'
+      - '/index.php?q=$uri$args'
+  'rc-deny1':
+    location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
+    server: webmail.vancouver.bardicgrove.org
+    location_deny: all
+  'rc-deny2':
+    location: '~ ^/(config|temp|logs)/'
+    server: webmail.vancouver.bardicgrove.org
+    location_deny: all
+  'rc-php':
+    location: '~ \.php$'
+    server: webmail.vancouver.bardicgrove.org
+    try_files:
+      - '$uri'
+      - '=404'
+    fastcgi: 'localhost:9000'
+    fastcgi_index: index.php
+    fastcgi_param: 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+    include:
+      - fastcgi_params
 
 php::extensions:
   gd:
