@@ -197,6 +197,7 @@ nginx::nginx_locations:
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.vancouver.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
     location_deny:
       - all
     ssl: true
@@ -204,6 +205,7 @@ nginx::nginx_locations:
   'rc-deny2':
     location: '~ ^/(config|temp|logs)/'
     server: webmail.vancouver.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
     location_deny:
       - all
     ssl: true
@@ -211,6 +213,7 @@ nginx::nginx_locations:
   'rc-php':
     location: '~ \.php$'
     server: webmail.vancouver.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
     try_files:
       - '$uri'
       - '=404'
