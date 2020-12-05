@@ -239,6 +239,9 @@ php::extensions:
   mbstring:
     package_prefix: php-
     provider: dnf
+  mysqlnd:
+    package_prefix: php-
+    provider: dnf
 php::fpm_user: nginx
 php::fpm_group: nginx
 
