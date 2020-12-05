@@ -175,9 +175,8 @@ nginx::nginx_servers:
   'webmail.vancouver.bardicgrove.org':
     ipv6_enable: true
     ipv6_listen_options: ''
-    location_cfg_append:
-      rewrite: '^ https://$server_name$request_uri? permanent'
     ssl: true
+    ssl_only: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
     www_root: '/opt/roundcube/roundcubemail-1.4.4'
