@@ -270,3 +270,7 @@ selinux::selbooleans:
   httpd_enable_homedirs:
     persistent: true
     value: 'on'
+
+selinux::fcontexts:
+  '/opt/roundcube/roundcubemail-1.4.4/logs':
+    setype: 'httpd_sys_rw_content_t'
