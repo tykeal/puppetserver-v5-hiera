@@ -176,7 +176,7 @@ nginx::nginx_servers:
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
-    www_root': '/opt/roundcube/roundcubemail-1.4.4'
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
 
 nginx::nginx_locations:
   'userContent':
