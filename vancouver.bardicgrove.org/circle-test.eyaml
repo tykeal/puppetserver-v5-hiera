@@ -177,6 +177,10 @@ nginx::nginx_servers:
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
     www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    try_files:
+      - '$uri'
+      - '$uri/'
+      - '/index.php?q=$uri$args'
 
 nginx::nginx_locations:
   'userContent':
@@ -188,13 +192,6 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
     ssl: true
-    # 'rc-root':
-    #   location: '/'
-    #   server: webmail.vancouver.bardicgrove.org
-    #   try_files:
-    #     - '$uri'
-    #     - '$uri/'
-    #     - '/index.php?q=$uri$args'
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.vancouver.bardicgrove.org
