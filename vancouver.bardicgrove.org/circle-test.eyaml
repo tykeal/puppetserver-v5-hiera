@@ -260,6 +260,12 @@ roundcube::process: nginx
 
 # selinux tunables #
 selinux::selbooleans:
+  httpd_can_network_connect:
+    persistent: true
+    value: 'on'
+  httpd_can_network_connect_db:
+    persistent: true
+    value: 'on'
   httpd_enable_homedirs:
     persistent: true
     value: 'on'
