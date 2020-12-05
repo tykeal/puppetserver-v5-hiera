@@ -199,11 +199,13 @@ nginx::nginx_locations:
     server: webmail.vancouver.bardicgrove.org
     location_deny:
       - all
+    ssl: true
   'rc-deny2':
     location: '~ ^/(config|temp|logs)/'
     server: webmail.vancouver.bardicgrove.org
     location_deny:
       - all
+    ssl: true
   'rc-php':
     location: '~ \.php$'
     server: webmail.vancouver.bardicgrove.org
@@ -216,6 +218,7 @@ nginx::nginx_locations:
       SCRIPT_FILENAME: '$document_root$fastcgi_script_name'
     include:
       - fastcgi_params
+    ssl: true
 
 php::extensions:
   gd:
