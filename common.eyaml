@@ -26,6 +26,9 @@ python::virtualenv: present
 python::dev: present
 
 # acme / letsencrypt
+# default to production (when we're doing testing in staging we override)
+acme::certificate::letsencrypt_ca: production
+
 # Do not manage packages, we already install the dependencies and the module
 # doesn't do it in a retry safe manner
 acme::manage_packages: false

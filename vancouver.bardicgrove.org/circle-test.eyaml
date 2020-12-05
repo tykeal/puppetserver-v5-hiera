@@ -2,7 +2,6 @@
 role: role::allinone
 
 # use letsencrypt staging for now
-acme::certificate::letsencrypt_ca: staging
 acme::certificates:
   # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
   'www.vancouver.bardicgrove.org webmail.vancouver.bardicgrove.org':
