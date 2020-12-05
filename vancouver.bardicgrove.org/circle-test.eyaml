@@ -174,7 +174,7 @@ nginx::nginx_servers:
     www_root: '/var/www/html'
   'webmail.vancouver.bardicgrove.org':
     ipv6_enable: true
-    ipv6_listen_options: 'ipv6only=on'
+    ipv6_listen_options: ''
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
