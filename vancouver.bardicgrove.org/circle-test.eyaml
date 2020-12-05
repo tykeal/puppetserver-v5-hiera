@@ -188,13 +188,13 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
     ssl: true
-  'rc-root':
-    location: '/'
-    server: webmail.vancouver.bardicgrove.org
-    try_files:
-      - '$uri'
-      - '$uri/'
-      - '/index.php?q=$uri$args'
+    # 'rc-root':
+    #   location: '/'
+    #   server: webmail.vancouver.bardicgrove.org
+    #   try_files:
+    #     - '$uri'
+    #     - '$uri/'
+    #     - '/index.php?q=$uri$args'
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.vancouver.bardicgrove.org
