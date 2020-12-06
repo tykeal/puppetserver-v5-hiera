@@ -264,6 +264,9 @@ roundcube::imap_port: 993
 roundcube::install_dir: /opt/roundcube
 roundcube::package_dir: /var/cache/puppet-archives
 roundcube::process: nginx
+roundcube::options_hash:
+  smtp_server: tls://smtp.vancouver.bardicgrove.org
+  mail_domain: bardicgrove.org
 
 ### WEB ###
 
