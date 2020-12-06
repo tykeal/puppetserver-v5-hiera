@@ -1,16 +1,6 @@
 ---
 role: role::allinone
 
-hosts::localhost_aliases:
-  - localhost
-  - localhost4
-  - localhost4.localdomain4
-  - webmail.vancouver.bardicgrove.org
-hosts::locahost6_aliases:
-  - localhost6
-  - localhost6.localdomain6
-  - webmail.vancouver.bardicgrove.org
-
 # use letsencrypt staging for now
 acme::certificates:
   # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
@@ -18,6 +8,11 @@ acme::certificates:
     use_account: "%{lookup('acme::certificate::use_account')}"
     use_profile: "%{lookup('acme::certificate::use_profile')}"
     letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
+
+# disable ocsp stapling, we're on fast rotation certs no need
+# plus postfix does not support it which causes problems if the certs
+# are issued with it turned on!
+acme::ocsp_must_staple: false
 
 # msyql
 mysql::resourcetag: allinone
@@ -60,7 +55,7 @@ dovecot::plugins:
   - sieve
 dovecot::config:
   protocols: imap lmtp pop3 sieve
-  hostname: 'mail.bardicgrove.org'
+  hostname: 'mail.vancouver.bardicgrove.org'
 dovecot::configs:
   '10-auth':
     auth_mechanisms: plain login
@@ -85,9 +80,9 @@ dovecot::configs:
         mode: '0660'
   '10-ssl':
     ssl: 'required'
-    ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
+    ssl_cert: '</etc/acme.sh/certs/mail.vancouver.bardicgrove.org/fullchain.pem'
     ssl_dh: '</etc/pki/dovecot/private/dh.pem'
-    ssl_key: '</etc/acme.sh/keys/mail.bardicgrove.org/private.key'
+    ssl_key: '</etc/acme.sh/keys/mail.vancouver.bardicgrove.org/private.key'
   '15-lda':
     recipient_delimiter: '-'
     lda_mailbox_autosubscribe: 'yes'
@@ -125,7 +120,7 @@ postfix::configs:
   message_size_limit:
     value: '20480000'
   myhostname:
-    value: 'smtp.bardicgrove.org'
+    value: 'smtp.vancouver.bardicgrove.org'
   recipient_delimiter:
     value: '-'
   smtpd_sasl_auth_enable:
@@ -145,12 +140,12 @@ postfix::configs:
   smtp_tls_CApath:
     ensure: absent
   smtpd_tls_cert_file:
-    value: /etc/acme.sh/certs/smtp.bardicgrove.org/fullchain.pem
+    value: /etc/acme.sh/certs/smtp.vancouver.bardicgrove.org/fullchain.pem
   smtpd_tls_chain_files:
     ensure: absent
-    value: '/etc/acme.sh/keys/smtp.bardicgrove.org/fullchain_with_key.pem'
+    value: '/etc/acme.sh/keys/smtp.vancouver.bardicgrove.org/fullchain_with_key.pem'
   smtpd_tls_key_file:
-    value: /etc/acme.sh/keys/smtp.bardicgrove.org/private.key
+    value: /etc/acme.sh/keys/smtp.vancouver.bardicgrove.org/private.key
   smtpd_tls_security_level:
     value: may
 postfix::mta: true
