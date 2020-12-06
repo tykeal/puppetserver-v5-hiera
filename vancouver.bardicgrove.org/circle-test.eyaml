@@ -1,6 +1,16 @@
 ---
 role: role::allinone
 
+hosts::localhost_aliases:
+  - localhost
+  - localhost4
+  - localhost4.localdomain4
+  - webmail.vancouver.bardicgrove.org
+hosts::locahost6_aliases:
+  - localhost6
+  - localhost6.localdomain6
+  - webmail.vancouver.bardicgrove.org
+
 # use letsencrypt staging for now
 acme::certificates:
   # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
