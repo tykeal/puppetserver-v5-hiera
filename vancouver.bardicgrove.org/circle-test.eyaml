@@ -53,6 +53,7 @@ dovecot::plugins:
   - lmtp
   - pop3
   - sieve
+dovecot::cert: 'mail.vancouver.bardicgrove.org'
 dovecot::config:
   protocols: imap lmtp pop3 sieve
   hostname: 'mail.vancouver.bardicgrove.org'
