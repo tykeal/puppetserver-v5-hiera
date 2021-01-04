@@ -291,4 +291,5 @@ selinux::fcontexts:
   '/opt/roundcube/roundcubemail-1.4.4/temp':
     setype: 'httpd_sys_rw_content_t'
 
-custom_profiles: 'profile::testit'
+custom_profiles:
+  - 'profile::testit'
