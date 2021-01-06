@@ -293,4 +293,5 @@ selinux::fcontexts:
 
 custom_profiles: profile::testit
 
-testit::teststruct: foo
+testit::teststruct:
+  'foo.bar': foo
