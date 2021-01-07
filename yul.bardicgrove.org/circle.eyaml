@@ -1,0 +1,292 @@
+---
+role: role::allinone
+
+# use letsencrypt staging for now
+acme::certificates:
+  # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
+  'www.bardicgrove.org www.yul.bardicgrove.org webmail.bardicgrove.org webmail.yul.bardicgrove.org':
+    use_account: "%{lookup('acme::certificate::use_account')}"
+    use_profile: "%{lookup('acme::certificate::use_profile')}"
+    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
+
+# disable ocsp stapling, we're on fast rotation certs no need
+# plus postfix does not support it which causes problems if the certs
+# are issued with it turned on!
+acme::ocsp_must_staple: false
+
+# msyql
+mysql::resourcetag: allinone
+mysql::server::remove_default_accounts: true
+mysql::server::restart: true
+# yamllint disable rule:line-length
+mysql::server::root_password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/fEDuK3a3RVnQwCfroZseqqb2iv8/VXSoGBKmOXjsgkDzByWgzc1M9zcDXBd2lgyYYVxIxO6F0h59jkFhs00O107HLF3RgW1HXLL6TUyc750YNzeC7sORh7Ut66b3y1tI8Rizky6PyFHdJo0pmNAtg7k0Z50TPDA6ZnbvGZvAw3sjScsUrezQvYgNzBdPH4IpknCVOnVqM708+wT5CRmQ+ZHr7Qre2FDDhNAukdIRDdLh/Sz/OlZqggFWw0//GyC0KlWKhw0Hc7kdy5nGvpuX8EiGB88ORjiXFhL7PVvrSqv+pGokKLVgn6qdsI+FlNutTfgGA8D6AG0KaK0pccu7SYUBDAPEqAo7p1ScpQEH/3NS2CPZQg5HKqS/4VDiiosDGghdBjcEmPVIUdGMZnfx/L8CLJqM1f4rHyqWM/gKRZ5Esmkm5wYj4uHhRpVuKb+cTV9VHWoI2aNWjDFvOyWRpcRLRR7oyxah0rVBVNcsg/xh8Ge8pfgQjLbgOvPbqNfCxe86fLJH2jTZYXEoyEoKgBPUherY283j2jQGGHNRm58RSpJVyVAfmr+ZXaTYqtiriej+yi5LlknrOO4ePIG21oezxrm8szFPDmFAKS4dGe97KLICi1nbXEG4HBz4lu6ZUMLBx8UdsgbUa2abOXJs3PE90aFSs7m+7eHp+8iMRFE3PQDp8Wlm0tFZ/IbquNzSZQGTjmveuIzX2YFUbPIthZD7gPkoqGEQ5uP+S7sOImRejL9x/2a1P3bAon12gO4TqI59c/ylF72ddvWobl/eMRO2CPcjTbLRdEsdG9GZ1xN7wBqlqAlsa6/kdRyh+aK3GLl/k+uY]
+
+###### MAIL CONFIGURUATION #####
+
+# clamav/freshclam
+clamavmilter::new_clamav_packages: true
+clamav::data::manage_package: true
+clamav::data::package_ensure: present
+clamav::data::package_name: clamav-data
+clamav::clamd::config: /etc/clamd.d/scan.conf
+clamav::clamd::package_name: clamd
+clamav::clamd::service_name: clamd@scan
+clamav::clamd::config::local_socket: '/var/run/clamd.scan/clamd.sock'
+clamav::clamd::config::logsyslog: 'yes'
+clamav::clamd::config::tcp_socket: 3310
+clamav::clamd::config::database_directory: /var/lib/clamav
+clamav::clamd::config::user: clamscan
+clamav::clamd::config::allow_supplementary_groups: 'yes'
+clamav::freshclam::manage_package: true
+clamav::freshclam::manage_sysconfig: true
+clamav::freshclam::package_ensure: present
+clamav::freshclam::package_name: clamav-update
+clamav::freshclam::config::database_directory: /var/lib/clamav
+clamav::freshclam::config::update_log_file: /var/log/clamav/freshclam.log
+clamav::freshclam::config::log_syslog: 'yes'
+clamav::freshclam::config::database_owner: clamscan
+clamav::freshclam::config::database_mirror: db.local.clamav.net
+
+# dovecot
+dovecot::plugins:
+  - imap
+  - lmtp
+  - pop3
+  - sieve
+dovecot::cert: 'mail.bardicgrove.org mail.yul.bardicgrove.org'
+dovecot::config:
+  protocols: imap lmtp pop3 sieve
+  hostname: 'mail.bardicgrove.org'
+dovecot::configs:
+  '10-auth':
+    auth_mechanisms: plain login
+    auth_username_format: '%n'
+    disable_plaintext_auth: 'yes'
+    passdb:
+      driver: pam
+    userdb:
+      driver: passwd
+  '10-master':
+    default_process_limit: 200
+    default_client_limit: 1200
+    'service auth':
+      unix_listener /var/spool/postfix/private/auth:
+        user: postfix
+        group: postfix
+        mode: '0660'
+    'service lmtp':
+      unix_listener /var/spool/postfix/private/dovecot-lmtp:
+        user: postfix
+        group: postfix
+        mode: '0660'
+  '10-ssl':
+    ssl: 'required'
+    ssl_cert: '</etc/acme.sh/certs/mail.bardicgrove.org/fullchain.pem'
+    ssl_dh: '</etc/pki/dovecot/private/dh.pem'
+    ssl_key: '</etc/acme.sh/keys/mail.bardicgrove.org/private.key'
+  '15-lda':
+    recipient_delimiter: '-'
+    lda_mailbox_autosubscribe: 'yes'
+  '20-lmtp':
+    protocol lmtp:
+      mail_plugins: sieve
+  '90-sieve':
+    plugin:
+      sieve: file:~/sieve;active=~/.dovecot.sieve
+      recipient_delimiter: '-'
+
+# opendkim
+opendkim::keys:
+  - domain: bardicgrove.org
+    selector: yul
+    # yamllint disable-line rule:line-length
+    publickey: "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwBYMTtyDn19IM4Fjmgnu5/fVIIaY0F5G5jDfenQiwFIU06hXkuRWqCLPyIbU6GyyDC9LFm+o58mPAM09tBqBHEqXFB7OMlwx+WYj3G6uhWAXs3NNHH+mZbVm14t8oqjjgJfjdUipbIe2l1bgbBvc+8CDfGEq7TqIWJoVbonw4hqURUyO897HHUo27SosjumRNUKda2dmCzHnNE4hysGM2oE6KbNnXeH+9BijS6i/PQP/RXZO4nZN7QHMnvlS35uJKsQeGrMj/iR8Xe75yVxR+qFxUUL3fkQLHsNWCRODNY7a1vO5ihO6ZP2juePkT8xgAHlHCbFTfd00/2zVEA5pQIDAQAB"
+    # yamllint disable-line rule:line-length
+    privatekey: ENC[GPG,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]
+    signingdomains:
+      - '*@bardicgrove.org'
+
+# postfix
+postfix::configs:
+  dovecot_destination_concurrency_limit:
+    value: '1'
+  dovecot_destination_recipient_limit:
+    value: '1'
+  home_mailbox:
+    value: 'Maildir/'
+  mailbox_transport:
+    value: lmtp:unix:private/dovecot-lmtp
+  # We use ~20MB as the limit as _most_ major providers will reject mail much
+  # larger than this
+  message_size_limit:
+    value: '20480000'
+  myhostname:
+    value: 'smtp.bardicgrove.org'
+  recipient_delimiter:
+    value: '-'
+  smtpd_sasl_auth_enable:
+    value: 'yes'
+  smtpd_sasl_path:
+    value: private/auth
+  smtpd_sasl_security_options:
+    value: noanonymous, noplaintext
+  smtpd_sasl_tls_security_options:
+    value: noanonymous
+  smtpd_sasl_type:
+    value: dovecot
+  smtpd_tls_auth_only:
+    value: 'yes'
+  smtp_tls_CAfile:
+    ensure: absent
+  smtp_tls_CApath:
+    ensure: absent
+  smtpd_tls_cert_file:
+    value: /etc/acme.sh/certs/smtp.bardicgrove.org/fullchain.pem
+  smtpd_tls_chain_files:
+    ensure: absent
+    value: '/etc/acme.sh/keys/smtp.bardicgrove.org/fullchain_with_key.pem'
+  smtpd_tls_key_file:
+    value: /etc/acme.sh/keys/smtp.bardicgrove.org/private.key
+  smtpd_tls_security_level:
+    value: may
+postfix::mta: true
+postfix::relayhost: direct
+postfix::smtp_listen: all
+postfix::use_dovecot_lda: true
+postfix::master_entries:
+  # yamllint disable-line rule:line-length
+  - 'spamassassin unix -     n       n     -         -       pipe user=spamassassin argv=/usr/bin/spamc -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}'
+postfix::master_submission: 'submission inet n - n - - smtpd'
+
+# spamassassin
+spamassassin::pyzor_enabled: false
+spamassassin::razor_enabled: false
+spamassassin::sa_update: true
+spamassassin::service_enabled: true
+spamassassin::spamd_min_children: 1
+
+###### / MAIL CONFIGURUATION #####
+
+### WEB ###
+
+nginx::nginx_servers:
+  'www.bardicgrove.org':
+    ipv6_enable: true
+    listen_options: 'default_server'
+    ssl: true
+    ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
+    ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
+    www_root: '/var/www/html'
+  'webmail.bardicgrove.org':
+    ipv6_enable: true
+    ipv6_listen_options: ''
+    ssl: true
+    ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
+    ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    try_files:
+      - '$uri'
+      - '$uri/'
+      - '/index.php?q=$uri$args'
+
+nginx::nginx_locations:
+  'userContent':
+    location: '~ ^/~(.+?)(/.*)?$'
+    server: www.bardicgrove.org
+    location_alias: '/home/$1/public_html$2'
+    index_files:
+      - index.html
+      - index.htm
+    autoindex: 'on'
+    ssl: true
+  'rc-deny1':
+    location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
+    server: webmail.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    location_deny:
+      - all
+    ssl: true
+    ssl_only: true
+  'rc-deny2':
+    location: '~ ^/(config|temp|logs)/'
+    server: webmail.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    location_deny:
+      - all
+    ssl: true
+    ssl_only: true
+  'rc-php':
+    location: '~ \.php$'
+    server: webmail.bardicgrove.org
+    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    try_files:
+      - '$uri'
+      - '=404'
+    fastcgi: 'localhost:9000'
+    fastcgi_index: index.php
+    fastcgi_param:
+      SCRIPT_FILENAME: '$document_root$fastcgi_script_name'
+    include:
+      - fastcgi_params
+    ssl: true
+    ssl_only: true
+
+php::extensions:
+  gd:
+    package_prefix: php-
+    provider: dnf
+  json:
+    package_prefix: php-
+    provider: dnf
+  ldap:
+    package_prefix: php-
+    provider: dnf
+  mbstring:
+    package_prefix: php-
+    provider: dnf
+  mysqlnd:
+    package_prefix: php-
+    provider: dnf
+php::fpm_user: nginx
+php::fpm_group: nginx
+
+# webmail
+roundcube::archive_provider: puppet
+roundcube::composer_manage: false
+roundcube::db_type: mysql
+roundcube::db_name: roundcube
+# yamllint disable-line rule:line-length
+roundcube::db_password: ENC[GPG,hQEMA4nUKMUJFtKCAQgAtMPWhwARnqgqj9QkQhpG928p3u4ev3tDSC0uwga/zzUtw6YWYQDKGzpO5Qn6ZWgpxDTgAPv7+AsQqSOKYUza63JyZc82Wu11qT400j08BlPlYnnNCcMdWfhBWySRDvgbbpu/pxmMerJoyuzPlq+74mYHLJxbuxUR3ib1Seqbo7HJAj3Eh2jgfqZYYGQvzQJcDknkHnd09CUGVdk3sAFiIrcnnyxXgQQpSNOkJyVf7GcA0643CP/kyqVX2bNhyaABQ0Jg05s2PNBRxzkau+ox7VyxyLF4KKMfrHo23pIoUPXWx7bY5Wmx5PMVIoPdwkBa5Tx7Y7KJoHIVqq57pkhywYUBDAPEqAo7p1ScpQEH/itgWOtkTnbir8BMsp13bohfLTVXaA83JFPq52jrf+VWJqr90XAE+O6gfLJNExkLZJ+3igREfssev+E9AikFVnPOQE48yEhl2IdHSyt6WsUVyZy2rNghMQgBHVN9hqgwN9hzrRgfqngyDAkU8yr0yPTBmuAjVvyyKCMLqSQr0xZOPINe5ZEqUm4FEprmUCu+JZ5cgDGebBfyyi3IA1te5U2vRKkoayU9fIXdEUW7EH9iY/0ZwwSUGJE7hIcDUuoTLM4YNQk8C8Qt22vFOmVAavMr+7BMv3i1UFSC7pKrg6/0TDigedL/kCFBaH9R59OhFGpwja/kjP6eP8RkI+A457vSZQGof+rCCV7te8EZ4f/x+8pLe16a9OpHfcKxdlFh9HauxhAez98ZJif+QdpbiLDHp20QBS/DluV0FAbac89AMbPSjsFqWPM+OuvBQC15G7PZoUSmWWNUxNOxOe4U/Nfdrt73fDof]
+roundcube::db_resource_tag: allinone
+# yamllint disable-line rule:line-length
+roundcube::des_key: ENC[GPG,hQEMA4nUKMUJFtKCAQgApzBrTuwewzERMVHoh9ES9NNpeol60qtxLfRucRpR73hqN7jTkvrOzdsyL4uyViAgWPMZE9wNLJQNNzHKwgXJQfeEOgPeCTnbaw6p/jVFcGCL6MrokG8BnjBfwSX94By30rF2nVIc6nZwu0z5LadfE9dFSjtAEvSlWp5vdjjrh2LeSmC6KCNqo1mpUjdfXa+pu++d8AN5HGpu9euiq811xua5UfqpxzXq8AlKDk8sUKVgrs2TBmIaKCZiv7Dcw/fHUYdkaBkyln2D8FZWBERInRTdVp+zXdOS+dPmxt2Vs4gW6b76r543KUX7nRbbD0ZaebNSKWBZR1NOWTjj03+Qf4UBCwPEqAo7p1ScpQEH+MpUC62V0YeCAHy8J7GvUk5WC0DiNy93kA4mfyMksw9HsGXQIJEvCjVWvsFU/0O/mZFZvIR7ONlXO61yanpDwwsa/bGpdYwOiy/SpENjKD9pE0JVxTDEnaLhY7uKOjkMVbx9gpvmyDOQDA+Vrq27sD18xTb7yD8pwgZWq0qvk6n3Yyx6YLYF8i7KmZoywUyudGRxJvm1ZciZudZz+TCInnhDcfKXiHFREOJFaxKBO7yjTXDsRfrq0sLYIADQyK6GOKNlWBwi1Kt2jbbvqYQtdaCOJvdkZaZdlhh2Rot2Vt/H6vSQJbrZkheyGT4zzG9nKgvI3kVHom5phMw+bgv3kdJlAYqvKqaud9Q7Vxvwm79FYlFuU/QspN8ElpcE+PJsGga4Spiyqiu+8TC7pxJjwSMILaYKvqRHcz88gpU0R2wa1Tbyc1rl+KGVxJilfejpeo8AeF7cAcYw83sMS34FUCp1SE7BGoU=]
+roundcube::imap_host: ssl://mail.yul.bardicgrove.org
+roundcube::imap_port: 993
+roundcube::install_dir: /opt/roundcube
+roundcube::package_dir: /var/cache/puppet-archives
+roundcube::plugins:
+  - managesieve
+roundcube::process: nginx
+roundcube::options_hash:
+  smtp_server: tls://smtp.yul.bardicgrove.org
+  mail_domain: bardicgrove.org
+
+### WEB ###
+
+# selinux tunables #
+selinux::selbooleans:
+  httpd_can_network_connect:
+    persistent: true
+    value: 'on'
+  httpd_can_network_connect_db:
+    persistent: true
+    value: 'on'
+  httpd_enable_homedirs:
+    persistent: true
+    value: 'on'
+
+selinux::fcontexts:
+  '/opt/roundcube/roundcubemail-1.4.4/logs':
+    setype: 'httpd_sys_rw_content_t'
+  '/opt/roundcube/roundcubemail-1.4.4/temp':
+    setype: 'httpd_sys_rw_content_t'
