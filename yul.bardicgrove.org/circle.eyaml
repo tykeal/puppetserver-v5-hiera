@@ -6,6 +6,7 @@ localexporttag: yulallinone
 # use letsencrypt staging for now
 acme::certificates:
   # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
+  # yamllint disable-line rule:line-length
   'www.bardicgrove.org www.yul.bardicgrove.org webmail.bardicgrove.org webmail.yul.bardicgrove.org':
     use_account: "%{lookup('acme::certificate::use_account')}"
     use_profile: "%{lookup('acme::certificate::use_profile')}"
@@ -20,7 +21,7 @@ acme::ocsp_must_staple: false
 mysql::resourcetag: "%{lookup('localexporttag')}"
 mysql::server::remove_default_accounts: true
 mysql::server::restart: true
-# yamllint disable rule:line-length
+# yamllint disable-line rule:line-length
 mysql::server::root_password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/fEDuK3a3RVnQwCfroZseqqb2iv8/VXSoGBKmOXjsgkDzByWgzc1M9zcDXBd2lgyYYVxIxO6F0h59jkFhs00O107HLF3RgW1HXLL6TUyc750YNzeC7sORh7Ut66b3y1tI8Rizky6PyFHdJo0pmNAtg7k0Z50TPDA6ZnbvGZvAw3sjScsUrezQvYgNzBdPH4IpknCVOnVqM708+wT5CRmQ+ZHr7Qre2FDDhNAukdIRDdLh/Sz/OlZqggFWw0//GyC0KlWKhw0Hc7kdy5nGvpuX8EiGB88ORjiXFhL7PVvrSqv+pGokKLVgn6qdsI+FlNutTfgGA8D6AG0KaK0pccu7SYUBDAPEqAo7p1ScpQEH/3NS2CPZQg5HKqS/4VDiiosDGghdBjcEmPVIUdGMZnfx/L8CLJqM1f4rHyqWM/gKRZ5Esmkm5wYj4uHhRpVuKb+cTV9VHWoI2aNWjDFvOyWRpcRLRR7oyxah0rVBVNcsg/xh8Ge8pfgQjLbgOvPbqNfCxe86fLJH2jTZYXEoyEoKgBPUherY283j2jQGGHNRm58RSpJVyVAfmr+ZXaTYqtiriej+yi5LlknrOO4ePIG21oezxrm8szFPDmFAKS4dGe97KLICi1nbXEG4HBz4lu6ZUMLBx8UdsgbUa2abOXJs3PE90aFSs7m+7eHp+8iMRFE3PQDp8Wlm0tFZ/IbquNzSZQGTjmveuIzX2YFUbPIthZD7gPkoqGEQ5uP+S7sOImRejL9x/2a1P3bAon12gO4TqI59c/ylF72ddvWobl/eMRO2CPcjTbLRdEsdG9GZ1xN7wBqlqAlsa6/kdRyh+aK3GLl/k+uY]
 
 ###### MAIL CONFIGURUATION #####
@@ -270,7 +271,9 @@ roundcube::plugins:
   - managesieve
 roundcube::process: nginx
 roundcube::options_hash:
-  smtp_server: tls://smtp.yul.bardicgrove.org
+  # We don't have an SNI cert for this so we _must_ use the actual postfix
+  # defined name
+  smtp_server: tls://smtp.bardicgrove.org
   mail_domain: bardicgrove.org
 
 ### WEB ###
