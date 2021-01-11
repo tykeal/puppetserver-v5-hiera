@@ -193,6 +193,18 @@ nginx::nginx_servers:
       - '/index.php?q=$uri$args'
 
 nginx::nginx_locations:
+  'userContentPHP':
+    location: '~ ^/~(.+?)(/.+\.php)$'
+    server: www.vancouver.bardicgrove.org
+    location_alias: '/home/$1/public_html$2'
+    autoindex: 'on'
+    index_files:
+      - index.php
+    fastcgi: 'localhost:9000'
+    fastcgi_index: index.php
+    include:
+      - fastcgi_params
+    ssl: true
   'userContent':
     location: '~ ^/~(.+?)(/.*)?$'
     server: www.bardicgrove.org
@@ -202,6 +214,7 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
     ssl: true
+    priority: 501
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.bardicgrove.org
