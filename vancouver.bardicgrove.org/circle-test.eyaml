@@ -190,6 +190,16 @@ nginx::nginx_servers:
       - '/index.php?q=$uri$args'
 
 nginx::nginx_locations:
+  'userContentPHP':
+    location: '~ ^/~(.+?)(/.+\.php)$'
+    server: www.vancouver.bardicgrove.org
+    location_alias: '/home/$1/public_html$2'
+    autoindex: 'on'
+    fastcgi: 'localhost:9000'
+    fastcgi_index: index.php
+    include:
+      - fastcgi_params
+    priority: 499
   'userContent':
     location: '~ ^/~(.+?)(/.*)?$'
     server: www.vancouver.bardicgrove.org
