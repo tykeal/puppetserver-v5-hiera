@@ -195,7 +195,7 @@ nginx::nginx_servers:
 nginx::nginx_locations:
   'userContentPHP':
     location: '~ ^/~(.+?)(/.+\.php)$'
-    server: www.vancouver.bardicgrove.org
+    server: www.bardicgrove.org
     location_alias: '/home/$1/public_html$2'
     autoindex: 'on'
     index_files:
