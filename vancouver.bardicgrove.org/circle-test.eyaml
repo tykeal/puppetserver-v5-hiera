@@ -197,6 +197,8 @@ nginx::nginx_locations:
     server: www.vancouver.bardicgrove.org
     location_alias: '/home/$1/public_html$2'
     autoindex: 'on'
+    index_files:
+      - index.php
     fastcgi: 'localhost:9000'
     fastcgi_index: index.php
     include:
