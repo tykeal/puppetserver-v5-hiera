@@ -201,7 +201,7 @@ nginx::nginx_locations:
     fastcgi_index: index.php
     include:
       - fastcgi_params
-    priority: 499
+    ssl: true
   'userContent':
     location: '~ ^/~(.+?)(/.*)?$'
     server: www.vancouver.bardicgrove.org
@@ -211,6 +211,7 @@ nginx::nginx_locations:
       - index.htm
     autoindex: 'on'
     ssl: true
+    priority: 501
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.vancouver.bardicgrove.org
