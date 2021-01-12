@@ -211,6 +211,7 @@ nginx::nginx_locations:
     index_files:
       - index.html
       - index.htm
+      - index.php
     autoindex: 'on'
     ssl: true
     priority: 501
