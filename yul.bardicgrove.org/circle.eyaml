@@ -123,10 +123,16 @@ postfix::configs:
   # larger than this
   message_size_limit:
     value: '20480000'
+  milter_default_action:
+    value: 'accept'
   myhostname:
     value: 'smtp.bardicgrove.org'
+  non_smtpd_milters:
+    value: '$smtpd_milters'
   recipient_delimiter:
     value: '-'
+  smtpd_milters:
+    value: inet:127.0.0.1:8891
   smtpd_sasl_auth_enable:
     value: 'yes'
   smtpd_sasl_path:
