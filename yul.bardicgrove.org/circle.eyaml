@@ -259,6 +259,11 @@ nginx::nginx_locations:
       - fastcgi_params
     ssl: true
     ssl_only: true
+  'squirrelmail':
+    location: '/webmail'
+    rewrite: '^/webmail(.*)$ https://webmail.bardicgrove.org redirect;'
+    server: www.bardicgrove.org
+    ssl: true
 
 php::extensions:
   gd:
