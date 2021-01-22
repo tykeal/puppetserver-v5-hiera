@@ -164,6 +164,7 @@ postfix::configs:
   smtpd_tls_security_level:
     value: may
 postfix::mta: true
+postfix::myorigin: 'bardicgrove.org'
 postfix::relayhost: direct
 postfix::smtp_listen: all
 postfix::use_dovecot_lda: true
