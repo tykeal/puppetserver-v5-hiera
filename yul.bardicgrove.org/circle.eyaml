@@ -109,6 +109,13 @@ opendkim::keys:
     signingdomains:
       - '*@bardicgrove.org'
 
+# opendmarc
+opendmarc::config:
+  # yamllint disable-line rule:line-length
+  TrustedAuthservIDs: mail.bardicgrove.org,smtp.bardicgrove.org,circle.yul.bardicgrove.org
+  IgnoreAuthenticatedClients: true
+  RejectFailures: true
+
 # postfix
 postfix::configs:
   dovecot_destination_concurrency_limit:
