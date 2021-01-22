@@ -137,7 +137,7 @@ postfix::configs:
     value: inet:127.0.0.1:8891
   smtpd_recipient_restrictions:
     # yamllint disable-line rule:line-length
-    value: 'permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination'
+    value: 'permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service unix:postgrey/socket'
   smtpd_sasl_auth_enable:
     value: 'yes'
   smtpd_sasl_path:
