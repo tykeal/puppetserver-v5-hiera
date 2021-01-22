@@ -127,8 +127,6 @@ postfix::configs:
     value: 'accept'
   mydomain:
     value: 'bardicgrove.org'
-  mydestination:
-    value: '$mydomain'
   myhostname:
     value: 'smtp.bardicgrove.org'
   non_smtpd_milters:
