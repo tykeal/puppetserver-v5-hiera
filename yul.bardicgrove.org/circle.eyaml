@@ -125,8 +125,14 @@ postfix::configs:
     value: '20480000'
   milter_default_action:
     value: 'accept'
+  mydomain:
+    value: 'bardicgrove.org'
+  mydestination:
+    value: '$mydomain'
   myhostname:
     value: 'smtp.bardicgrove.org'
+  myorigin:
+    value: '$mydomain'
   non_smtpd_milters:
     value: '$smtpd_milters'
   recipient_delimiter:
