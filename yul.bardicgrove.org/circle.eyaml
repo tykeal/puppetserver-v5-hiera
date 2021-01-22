@@ -141,7 +141,7 @@ postfix::configs:
   recipient_delimiter:
     value: '-'
   smtpd_milters:
-    value: inet:127.0.0.1:8891
+    value: inet:127.0.0.1:8891,inet:127.0.0.1:8893
   smtpd_recipient_restrictions:
     # yamllint disable-line rule:line-length
     value: 'permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service unix:postgrey/socket'
