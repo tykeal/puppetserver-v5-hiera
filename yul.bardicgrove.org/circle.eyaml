@@ -131,8 +131,6 @@ postfix::configs:
     value: '$mydomain'
   myhostname:
     value: 'smtp.bardicgrove.org'
-  myorigin:
-    value: '$mydomain'
   non_smtpd_milters:
     value: '$smtpd_milters'
   recipient_delimiter:
