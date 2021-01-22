@@ -261,7 +261,8 @@ nginx::nginx_locations:
     ssl_only: true
   'squirrelmail':
     location: '/webmail'
-    rewrite: '^/webmail(.*)$ https://webmail.bardicgrove.org redirect;'
+    rewrite_rules:
+      - '^/webmail(.*)$ https://webmail.bardicgrove.org redirect'
     server: www.bardicgrove.org
     ssl: true
 
