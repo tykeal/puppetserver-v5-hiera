@@ -110,7 +110,7 @@ opendkim::keys:
       - '*@bardicgrove.org'
 
 # opendmarc
-opendmarc::config:
+opendmarc::configs:
   # yamllint disable-line rule:line-length
   TrustedAuthservIDs: mail.bardicgrove.org,smtp.bardicgrove.org,circle.yul.bardicgrove.org
   IgnoreAuthenticatedClients: true
