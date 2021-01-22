@@ -328,3 +328,5 @@ selinux::fcontexts:
     setype: 'httpd_sys_rw_content_t'
   '/opt/roundcube/roundcubemail-1.4.4/temp':
     setype: 'httpd_sys_rw_content_t'
+
+custom_profiles: profile::smtp::opendmarc
