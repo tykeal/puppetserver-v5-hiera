@@ -166,6 +166,7 @@ postfix::configs:
 postfix::mta: true
 postfix::myorigin: 'bardicgrove.org'
 postfix::relayhost: direct
+postfix::root_mail_recipient: 'tykeal'
 postfix::smtp_listen: all
 postfix::use_dovecot_lda: true
 postfix::master_entries:
