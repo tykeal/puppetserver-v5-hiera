@@ -97,9 +97,13 @@ dovecot::configs:
     plugin:
       sieve: file:~/sieve;active=~/.dovecot.sieve
       recipient_delimiter: '-'
+      sieve_default: /etc/dovecot/sieve/default.sieve
+      # make default visible to users
+      sieve_default_name: roundcube
       sieve_global: /etc/dovecot/sieve/
 dovecot::sieve_filters:
   - SpamToJunk
+  - default
 
 # opendkim
 opendkim::keys:
