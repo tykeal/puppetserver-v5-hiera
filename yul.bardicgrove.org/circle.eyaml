@@ -211,7 +211,7 @@ nginx::nginx_servers:
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
-    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    www_root: "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}"
     try_files:
       - '$uri'
       - '$uri/'
@@ -244,7 +244,7 @@ nginx::nginx_locations:
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
     server: webmail.bardicgrove.org
-    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    www_root: "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}"
     location_deny:
       - all
     ssl: true
@@ -252,7 +252,7 @@ nginx::nginx_locations:
   'rc-deny2':
     location: '~ ^/(config|temp|logs)/'
     server: webmail.bardicgrove.org
-    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    www_root: "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}"
     location_deny:
       - all
     ssl: true
@@ -260,7 +260,7 @@ nginx::nginx_locations:
   'rc-php':
     location: '~ \.php$'
     server: webmail.bardicgrove.org
-    www_root: '/opt/roundcube/roundcubemail-1.4.4'
+    www_root: "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}"
     try_files:
       - '$uri'
       - '=404'
@@ -299,6 +299,10 @@ php::fpm_user: nginx
 php::fpm_group: nginx
 
 # webmail
+roundcube::version: 1.4.10
+# complete edition
+# yamllint disable-line rule:line-length
+roundcube::checksum: a3d8c0dc4db70188f4aea3b62c1bd8b0b31b0c0f77f77138c0715e9d6ddd520f
 roundcube::archive_provider: puppet
 roundcube::composer_manage: false
 roundcube::db_type: mysql
@@ -336,9 +340,9 @@ selinux::selbooleans:
     value: 'on'
 
 selinux::fcontexts:
-  '/opt/roundcube/roundcubemail-1.4.4/logs':
+  "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}/logs":
     setype: 'httpd_sys_rw_content_t'
-  '/opt/roundcube/roundcubemail-1.4.4/temp':
+  "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}/temp":
     setype: 'httpd_sys_rw_content_t'
 
 custom_profiles: profile::smtp::opendmarc
