@@ -97,6 +97,7 @@ dovecot::configs:
     plugin:
       sieve: file:~/sieve;active=~/.dovecot.sieve
       recipient_delimiter: '-'
+      sieve_global: /etc/dovecot/sieve/
 dovecot::sieve_filters:
   - SpamToJunk
 
