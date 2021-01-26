@@ -97,6 +97,8 @@ dovecot::configs:
     plugin:
       sieve: file:~/sieve;active=~/.dovecot.sieve
       recipient_delimiter: '-'
+dovecot::sieve_filters:
+  - SpamToJunk
 
 # opendkim
 opendkim::keys:
