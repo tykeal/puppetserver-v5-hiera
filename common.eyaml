@@ -64,8 +64,11 @@ ntp::restrict:
   - '127.0.0.1'
 
 # common nginx configuration
-# nginx::config::confd_purge: true
-# nginx::config::vhost_purge: true
+nginx::config::confd_purge: true
+nginx::config::vhost_purge: true
+
+# Set our nginx SSL configuration
+nginx::ssl_protocols: TLSv1.2
 
 # default option tree for saz-ssh
 
