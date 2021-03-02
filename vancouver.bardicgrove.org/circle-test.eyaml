@@ -175,18 +175,18 @@ nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
     ipv6_enable: true
     listen_options: 'default_server'
+    listen_port: 443
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
-    ssl_only: true
     www_root: '/var/www/html'
   'webmail.vancouver.bardicgrove.org':
     ipv6_enable: true
     ipv6_listen_options: ''
+    listen_port: 443
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.vancouver.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.vancouver.bardicgrove.org/private.key'
-    ssl_only: true
     www_root: '/opt/roundcube/roundcubemail-1.4.4'
     try_files:
       - '$uri'
