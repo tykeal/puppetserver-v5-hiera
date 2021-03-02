@@ -171,6 +171,8 @@ spamassassin::spamd_min_children: 1
 
 ### WEB ###
 
+nginx::ssl_protocols: TLSv1.2
+
 nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
     ipv6_enable: true
