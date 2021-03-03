@@ -171,8 +171,13 @@ spamassassin::spamd_min_children: 1
 
 ### WEB ###
 
+# one non-leap year in seconds
+nginx::max-age: 31536000
+
 nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
+    add_header:
+      'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; includeSubDomains; preload"
     ipv6_enable: true
     listen_options: 'default_server'
     ssl: true
@@ -181,6 +186,8 @@ nginx::nginx_servers:
     ssl_redirect: true
     www_root: '/var/www/html'
   'webmail.vancouver.bardicgrove.org':
+    add_header:
+      'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; preload"
     ipv6_enable: true
     ipv6_listen_options: ''
     ssl: true
