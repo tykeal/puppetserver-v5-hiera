@@ -224,18 +224,26 @@ spamass_milter::config::options:
 
 nginx::nginx_servers:
   'www.bardicgrove.org':
+    add_header:
+      # yamllint disable-line rule:line-length
+      'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; includeSubDomains; preload"
     ipv6_enable: true
     listen_options: 'default_server'
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
+    ssl_redirect: true
     www_root: '/var/www/html'
   'webmail.bardicgrove.org':
+    add_header:
+      # yamllint disable-line rule:line-length
+      'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; preload"
     ipv6_enable: true
     ipv6_listen_options: ''
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
+    ssl_redirect: true
     www_root: "/opt/roundcube/roundcubemail-%{lookup('roundcube::version')}"
     try_files:
       - '$uri'
@@ -255,6 +263,7 @@ nginx::nginx_locations:
     include:
       - fastcgi_params
     ssl: true
+    ssl_only: true
   'userContent':
     location: '~ ^/~(.+?)(/.*)?$'
     server: www.bardicgrove.org
@@ -265,6 +274,7 @@ nginx::nginx_locations:
       - index.php
     autoindex: 'on'
     ssl: true
+    ssl_only: true
     priority: 501
   'rc-deny1':
     location: '~ ^/(README.md|INSTALL|LICENSE|CHANGELOG|UPGRADING)$'
@@ -303,6 +313,7 @@ nginx::nginx_locations:
       - '^/webmail(.*)$ https://webmail.bardicgrove.org redirect'
     server: www.bardicgrove.org
     ssl: true
+    ssl_only: true
 
 php::extensions:
   gd:

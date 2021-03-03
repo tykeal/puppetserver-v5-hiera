@@ -67,6 +67,9 @@ ntp::restrict:
 nginx::config::confd_purge: true
 nginx::config::vhost_purge: true
 
+# one non-leap year in seconds
+nginx::max-age: 31536000
+
 # Set our nginx SSL configuration
 nginx::ssl_protocols: TLSv1.2 TLSv1.3
 # yamllint disable-line rule:line-length

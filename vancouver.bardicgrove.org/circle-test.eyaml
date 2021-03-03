@@ -20,7 +20,7 @@ acme::ocsp_must_staple: false
 mysql::resourcetag: "%{lookup('localexporttag')}"
 mysql::server::remove_default_accounts: true
 mysql::server::restart: true
-# yamllint disable rule:line-length
+# yamllint disable-line rule:line-length
 mysql::server::root_password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/U1sImKYsUk2Kkrb0Xn702DyZ2C1ZmO8mDTEpOOotP3RaIoVRUUWOvcrZgm4PzJ7licZIAmFBTgGXVEr8Z0DwvykfpPMc+Zzv07qGLyhMSfjT2TXQaLPjRmAMH0yOUjF3WZegZPpurGPkEsCYmNdX8b0MlxX4Y/qFXoPspkGUdGgAKk6dZzS+HT5geubVTIgn6hQfGr3AvDMgNPnC8i80+tQDVXTJnuExTo9Fp0GywfQ1lJvNloeHoHv7a/jd5mXhHmbkJA/7njI96ConcYGUZ74d4oevm8L1X1SAERlenMV1fpgY3C6Mop+3XCHsC0xJ0Rahzvq0ATHEeuw9VVCRoYUBDAPEqAo7p1ScpQEH/AmZTrTttnnPmBAtJNr8l0IkBK1ZFhtZE5rRK2AXHGgv0ITOcvRrlZFkgxI5TTLRluHOQ9ta/6cm6t+OwmTEXAzzmAkjB0EVO30xuqe0yxtkT9lFx7YYs2NJlTTAZPpcTyaA5i3dbPS2EYyQAi0bh/ht7N3vPcH6GtJSsmiwA9UveEafoyBJ48bioUXEpE3Q4SSoyZ1NEiLN2O+60g1ZD/lgw6zwu3XVH7ZOw20scpAb5VbMNDX+AFQI/m0/mEFDrjy+skj+NW1uezlmfgMOkBxWER5p6cccgthMgX2M/6u9Frf/HE8fcs768nk3cCMmghrafO8dcPdWk+HTpXK8gLvSZQFE/0UzXwZ6cmIguvz0MEoR4DwOHQnSPpeH9Zqu+Ve/jISmCN/t1por5XykE85YIM1c3WFURrZoAw7a7aYqHhF0gqUEfEp92E5dJesaXyPFLnDeAipMEnKvIQwiAwEheuVUnXZ0]
 
 ###### MAIL CONFIGURUATION #####
@@ -146,6 +146,7 @@ postfix::configs:
     value: /etc/acme.sh/certs/smtp.vancouver.bardicgrove.org/fullchain.pem
   smtpd_tls_chain_files:
     ensure: absent
+    # yamllint disable-line rule:line-length
     value: '/etc/acme.sh/keys/smtp.vancouver.bardicgrove.org/fullchain_with_key.pem'
   smtpd_tls_key_file:
     value: /etc/acme.sh/keys/smtp.vancouver.bardicgrove.org/private.key
@@ -171,12 +172,10 @@ spamassassin::spamd_min_children: 1
 
 ### WEB ###
 
-# one non-leap year in seconds
-nginx::max-age: 31536000
-
 nginx::nginx_servers:
   'www.vancouver.bardicgrove.org':
     add_header:
+      # yamllint disable-line rule:line-length
       'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; includeSubDomains; preload"
     ipv6_enable: true
     listen_options: 'default_server'
@@ -187,6 +186,7 @@ nginx::nginx_servers:
     www_root: '/var/www/html'
   'webmail.vancouver.bardicgrove.org':
     add_header:
+      # yamllint disable-line rule:line-length
       'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; preload"
     ipv6_enable: true
     ipv6_listen_options: ''
