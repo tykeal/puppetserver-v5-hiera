@@ -228,7 +228,8 @@ nginx::nginx_servers:
       # yamllint disable-line rule:line-length
       'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; includeSubDomains; preload"
     ipv6_enable: true
-    listen_options: 'default_server'
+    ipv6_listen_options: 'default_server http2'
+    listen_options: 'default_server http2'
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
@@ -239,7 +240,7 @@ nginx::nginx_servers:
       # yamllint disable-line rule:line-length
       'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; preload"
     ipv6_enable: true
-    ipv6_listen_options: ''
+    ipv6_listen_options: 'http2'
     ssl: true
     ssl_cert: '/etc/acme.sh/certs/www.bardicgrove.org/fullchain.pem'
     ssl_key: '/etc/acme.sh/keys/www.bardicgrove.org/private.key'
