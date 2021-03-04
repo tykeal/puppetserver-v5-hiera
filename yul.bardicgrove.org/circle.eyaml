@@ -63,7 +63,7 @@ dovecot::config:
 dovecot::configs:
   '10-auth':
     auth_mechanisms: plain login
-    auth_username_format: '%n'
+    auth_username_format: '%Ln'
     disable_plaintext_auth: 'yes'
     passdb:
       driver: pam
