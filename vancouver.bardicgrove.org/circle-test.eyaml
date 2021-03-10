@@ -320,5 +320,3 @@ selinux::fcontexts:
     setype: 'httpd_sys_rw_content_t'
 
 custom_profiles: profile::testit
-
-lfcorehost: true
