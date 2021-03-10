@@ -322,3 +322,4 @@ selinux::fcontexts:
 custom_profiles: profile::testit
 
 production_ready: true
+lfcorehost: true
