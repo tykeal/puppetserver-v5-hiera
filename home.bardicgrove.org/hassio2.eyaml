@@ -93,7 +93,7 @@ podman::containers:
     flags:
       publish:
         - '8123:8123'
-      volume: 'homeassistant_config:/config'
+      volume: 'homeassistant_config:/config:rwm'
     require:
       - Podman::Volume[homeassistant_config]
 ### END PODMAN ###
