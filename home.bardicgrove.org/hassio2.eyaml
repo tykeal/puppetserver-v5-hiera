@@ -44,22 +44,22 @@ nginx::nginx_upstreams:
 ### END WEB ###
 
 ### TYPES ###
-# types::user:
-#   homeassistant:
-#     ensure: present
-#     forcelocal: true
-#     gid: 22000
-#     uid: 22000
-#     # yamllint disable-line rule:line-length
-#     password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/W/bSCCKfMKRG9Y1zteMEE1HvWQFzqygS5cWoO4L41Xb4NsRcA6Ac/H4mRKQ4PDv1aGXVAKPGwOxaDj4h6q+2P/j+311DsWKrO1pkLt+NQ+g4gRLY6iYYu7Cs2KWs73f5xAnc46Jci4bTUv0yGb+Qf7Xc30Y0Zt6vvfHuPzI7ov6QtGFpy6bHwUQbC5NJTreG1bXNj5JGRnPJeiuElNA7h3AxzDeP2X6w5+msmSWLUrCNcpG6CpALkht0QZ0zB9cDjpZUSyGw+icwnZaheQ+p/7M0SA5LbbK0zWSYNk0eMmWxVOD3POWsnKzswyKG+jS8xZ8XpOsifjxVCgyu/R5Vp4UBDAPEqAo7p1ScpQEH/0cmzPkGPYurj2KuEkhX41zqnci0jg/D9E655cILwtYOdfj6kVzw55H9o0rMZYiruDVD5ixuYBR1dF7kqIV9MslR/4jR4CIBh1eGCoL+Eh09kPnZXFBWJ+yfVwEx+pBLAmD/4B+F0s0GhVQqBstJPkRyaR3+r1hthmPFDQbICdolm57P0JBx73g4V9UjFJGtfqixASIvVRYf1n7ix885NsHJUpwOhlj4oRiNcR8QO6xqTiTK+HPFiqRYosMsYQsiKDHhRkkG1z0/AGlRxjoUx5gROCXztXlsfsNu8vBMnxUrkBwp8pQhd6Wmxhg2bcgSW9Fg9kbuv45ERkVeFygc6ZjSPQF3p5nwaHxER/AL8hCd8kZXulfB6wyI0Q5/McAVnMWddkF15L6m07IkAqqNOtQNKv1yvBSmW8XPErdIqKY=]
-#     home: /home/homeassistant
-#
-# types::group:
-#   homeassistant:
-#     ensure: present
-#     forcelocal: true
-#     gid: 22000
-#
+types::user:
+  homeassistant:
+    ensure: present
+    forcelocal: true
+    gid: 22000
+    uid: 22000
+    # yamllint disable-line rule:line-length
+    password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/W/bSCCKfMKRG9Y1zteMEE1HvWQFzqygS5cWoO4L41Xb4NsRcA6Ac/H4mRKQ4PDv1aGXVAKPGwOxaDj4h6q+2P/j+311DsWKrO1pkLt+NQ+g4gRLY6iYYu7Cs2KWs73f5xAnc46Jci4bTUv0yGb+Qf7Xc30Y0Zt6vvfHuPzI7ov6QtGFpy6bHwUQbC5NJTreG1bXNj5JGRnPJeiuElNA7h3AxzDeP2X6w5+msmSWLUrCNcpG6CpALkht0QZ0zB9cDjpZUSyGw+icwnZaheQ+p/7M0SA5LbbK0zWSYNk0eMmWxVOD3POWsnKzswyKG+jS8xZ8XpOsifjxVCgyu/R5Vp4UBDAPEqAo7p1ScpQEH/0cmzPkGPYurj2KuEkhX41zqnci0jg/D9E655cILwtYOdfj6kVzw55H9o0rMZYiruDVD5ixuYBR1dF7kqIV9MslR/4jR4CIBh1eGCoL+Eh09kPnZXFBWJ+yfVwEx+pBLAmD/4B+F0s0GhVQqBstJPkRyaR3+r1hthmPFDQbICdolm57P0JBx73g4V9UjFJGtfqixASIvVRYf1n7ix885NsHJUpwOhlj4oRiNcR8QO6xqTiTK+HPFiqRYosMsYQsiKDHhRkkG1z0/AGlRxjoUx5gROCXztXlsfsNu8vBMnxUrkBwp8pQhd6Wmxhg2bcgSW9Fg9kbuv45ERkVeFygc6ZjSPQF3p5nwaHxER/AL8hCd8kZXulfB6wyI0Q5/McAVnMWddkF15L6m07IkAqqNOtQNKv1yvBSmW8XPErdIqKY=]
+    home: /home/homeassistant
+
+types::group:
+  homeassistant:
+    ensure: present
+    forcelocal: true
+    gid: 22000
+
 # type::file:
 #   '/home/homeassistant':
 #     ensure: directory
