@@ -32,6 +32,13 @@ nginx::nginx_servers:
     ssl_key: '/etc/acme.sh/keys/hassio2.home.bardicgrove.org/private.key'
     ssl_redirect: true
     proxy: 'http://hassio_app'
+    proxy_set_header:
+      - 'Host $host'
+      - 'X-Real-IP $remote_addr'
+      - 'X-Forwarded-For $proxy_add_x_forwarded_for'
+      - 'Proxy ""'
+      - 'Upgrade $http_upgrade'
+      - 'Connection "upgrade"'
 
 nginx::nginx_upstreams:
   'hassio_app':
