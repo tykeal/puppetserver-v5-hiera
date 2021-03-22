@@ -61,13 +61,13 @@ types::group:
     gid: 22000
 
 type::file:
-  /home/homeassistant:
+  '/home/homeassistant':
     ensure: directory
     owner: 22000
     group: 22000
     mode: '0700'
     require: 'User[homeassistant]'
-  /home/homeassistant/config:
+  '/home/homeassistant/config':
     ensure: link
     # yamllint disable-line rule:line-length
     target: '/home/homeassistant/.local/share/containers/storage/volumes/homeassistant_config/_data'
