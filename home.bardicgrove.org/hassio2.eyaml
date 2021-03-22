@@ -35,6 +35,7 @@ nginx::nginx_servers:
 
 nginx::nginx_upstreams:
   'hassio_app':
+    ensure: present
     members:
       'localhost:8123':
         server: localhost
