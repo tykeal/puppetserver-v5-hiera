@@ -1,0 +1,105 @@
+---
+role: role::webpod
+
+localexporttag: hassio2
+
+# use letsencrypt staging for now
+acme::certificates:
+  # Handle the hostname as well as the published name'
+  'hassio2.home.bardicgrove.org hassio.home.bardicgrove.org':
+    use_account: "%{lookup('acme::certificate::use_account')}"
+    use_profile: "%{lookup('acme::certificate::use_profile')}"
+    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
+
+# disable ocsp stapling, we're on fast rotation certs no need
+# plus postfix does not support it which causes problems if the certs
+# are issued with it turned on!
+acme::ocsp_must_staple: false
+
+
+### WEB ###
+
+nginx::nginx_servers:
+  'hassio2.home.bardicgrove.org':
+    add_header:
+      # yamllint disable-line rule:line-length
+      'Strict-Transport-Security': "max-age=%{lookup('nginx::max-age')}; includeSubDomains; preload"
+    ipv6_enable: true
+    ipv6_listen_options: 'default_server http2'
+    listen_options: 'default_server http2'
+    ssl: true
+    ssl_cert: '/etc/acme.sh/certs/hassio2.home.bardicgrove.org/fullchain.pem'
+    ssl_key: '/etc/acme.sh/keys/hassio2.home.bardicgrove.org/private.key'
+    ssl_redirect: true
+    proxy: 'http://hassio_app'
+
+nginx::nginx_upstreams:
+  'hassio_app':
+    members:
+      'localhost:8123':
+        server: localhost
+        port: 8123
+        weight: 1
+### END WEB ###
+
+### TYPES ###
+types::user:
+  homeassistant:
+    ensure: present
+    forcelocal: true
+    gid: 22000
+    uid: 22000
+    password: ENC[GPG,hQEMA4nUKMUJFtKCAQf/W/bSCCKfMKRG9Y1zteMEE1HvWQFzqygS5cWoO4L41Xb4NsRcA6Ac/H4mRKQ4PDv1aGXVAKPGwOxaDj4h6q+2P/j+311DsWKrO1pkLt+NQ+g4gRLY6iYYu7Cs2KWs73f5xAnc46Jci4bTUv0yGb+Qf7Xc30Y0Zt6vvfHuPzI7ov6QtGFpy6bHwUQbC5NJTreG1bXNj5JGRnPJeiuElNA7h3AxzDeP2X6w5+msmSWLUrCNcpG6CpALkht0QZ0zB9cDjpZUSyGw+icwnZaheQ+p/7M0SA5LbbK0zWSYNk0eMmWxVOD3POWsnKzswyKG+jS8xZ8XpOsifjxVCgyu/R5Vp4UBDAPEqAo7p1ScpQEH/0cmzPkGPYurj2KuEkhX41zqnci0jg/D9E655cILwtYOdfj6kVzw55H9o0rMZYiruDVD5ixuYBR1dF7kqIV9MslR/4jR4CIBh1eGCoL+Eh09kPnZXFBWJ+yfVwEx+pBLAmD/4B+F0s0GhVQqBstJPkRyaR3+r1hthmPFDQbICdolm57P0JBx73g4V9UjFJGtfqixASIvVRYf1n7ix885NsHJUpwOhlj4oRiNcR8QO6xqTiTK+HPFiqRYosMsYQsiKDHhRkkG1z0/AGlRxjoUx5gROCXztXlsfsNu8vBMnxUrkBwp8pQhd6Wmxhg2bcgSW9Fg9kbuv45ERkVeFygc6ZjSPQF3p5nwaHxER/AL8hCd8kZXulfB6wyI0Q5/McAVnMWddkF15L6m07IkAqqNOtQNKv1yvBSmW8XPErdIqKY=]
+    home: /home/homeassistant
+    managehome: true
+
+types::group:
+  homeassistant:
+    ensure: present
+    forcelocal: true
+    gid: 22000
+
+type::file:
+  /home/homeassistant:
+    ensure: directory
+    owner: 22000
+    group: 22000
+    mode: '0700'
+    require: 'User[homeassistant]'
+  /home/homeassistant/config:
+    ensure: link
+    # yamllint disable-line rule:line-length
+    target: '/home/homeassistant/.local/share/containers/storage/volumes/homeassistant_config/_data'
+    require: 'Podman::Volume[homeassistant_config]'
+### END TYPES ###
+
+### PODMAN ###
+podman::manage_subuid: true
+podman::subid:
+  '22000':
+    subuid: 20022000
+    count: 65535
+
+podman::volumes:
+  homeassistant_config:
+    user: homeassistant
+
+podman::containers:
+  homeassistant:
+    user: homeassistant
+    image: 'homeassistant/home-assistant:latest'
+    flags:
+      publish:
+        - '8123:8123'
+      volume: 'homeassistant_config:/config'
+    require:
+      - Podman::Volume[homeassistant_config]
+
+
+### END PODMAN ###
+
+# selinux tunables #
+selinux::selbooleans:
+  httpd_can_network_connect:
+    persistent: true
+    value: 'on'
