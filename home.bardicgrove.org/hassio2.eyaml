@@ -1,6 +1,10 @@
 ---
 role: role::webpod
 
+# extra types to dynamically load
+types::types:
+  - firewall
+
 localexporttag: hassio2
 
 # use letsencrypt staging for now
@@ -69,23 +73,31 @@ types::group:
     gid: 22000
 
 types::file:
-  '/home/homeassistant':
+  /home/homeassistant:
     ensure: directory
     owner: 22000
     group: 22000
     mode: '0700'
     require: 'User[homeassistant]'
-  '/home/homeassistant/config':
+  /home/homeassistant/config:
     ensure: link
     # yamllint disable-line rule:line-length
     target: '/home/homeassistant/.local/share/containers/storage/volumes/homeassistant_config/_data'
     require: 'Podman::Volume[homeassistant_config]'
+  /etc/udev/rules.d/99-husbzb.rules:
+    ensure: file
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # FILE MANAGED BY PUPPET
+      ATTRS{product}=="HubZ Smart Home Controller", GROUP+="homeassistant"
 ### END TYPES ###
 
 ### PODMAN ###
 podman::manage_subuid: true
 podman::subid:
-  '22000':
+  homeassistant:
     subuid: 2200000
     count: 65535
 
@@ -110,3 +122,23 @@ selinux::selbooleans:
   httpd_can_network_connect:
     persistent: true
     value: 'on'
+
+# Extra firewall rules
+types::firewall:
+  '40 accept mdns':
+    action: accept
+    destination: 224.0.0.251
+    dport: 5353
+    proto: udp
+    state:
+      - NEW
+      - UNTRACKED
+  '40 accept mdns v6':
+    action: accept
+    destination: ff02::fb
+    dport: 5353
+    proto: udp
+    provider: ip6tables
+    state:
+      - NEW
+      - UNTRACKED
