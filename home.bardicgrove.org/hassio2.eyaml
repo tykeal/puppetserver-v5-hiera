@@ -125,22 +125,24 @@ selinux::selbooleans:
 
 # Extra firewall rules
 types::firewall:
-  '040 accept mdns ssdp':
+  '040 accept discovery services':
     action: accept
     destination: 224.0.0.251
     dport:
       - 1900
       - 5353
+      - 10101
     proto: udp
     state:
       - NEW
       - UNTRACKED
-  '040 accept mdns ssdp v6':
+  '040 accept discovery v6':
     action: accept
     destination: ff02::fb
     dport:
       - 1900
       - 5353
+      - 10101
     proto: udp
     provider: ip6tables
     state:
