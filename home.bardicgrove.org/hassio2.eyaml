@@ -132,6 +132,7 @@ types::firewall:
       - 1900
       - 1901
       - 5353
+      - 9100
       - 10101
     proto: udp
     state:
@@ -144,6 +145,7 @@ types::firewall:
       - 1900
       - 1901
       - 5353
+      - 9100
       - 10101
     proto: udp
     provider: ip6tables
