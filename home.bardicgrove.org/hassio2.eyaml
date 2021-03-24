@@ -129,6 +129,7 @@ types::firewall:
     action: accept
     destination: 224.0.0.251
     dport:
+      - 515
       - 1900
       - 1901
       - 5353
@@ -142,6 +143,7 @@ types::firewall:
     action: accept
     destination: ff02::fb
     dport:
+      - 515
       - 1900
       - 1901
       - 5353
