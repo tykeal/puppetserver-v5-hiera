@@ -128,10 +128,12 @@ types::firewall:
   '040 accept multicast services':
     action: accept
     pkttype: multicast
+    proto: all
   '040 accept multicast services v6':
     provider: ip6tables
     action: accept
     pkttype: multicast
+    proto: all
   #'040 accept discovery services':
   #  action: accept
   #  destination: 224.0.0.251
