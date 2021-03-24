@@ -127,7 +127,7 @@ selinux::selbooleans:
 types::firewall:
   '040 accept mdns':
     action: accept
-    destination: 224.0.0.251
+    # destination: 224.0.0.251
     dport: 5353
     proto: udp
     state:
@@ -135,7 +135,7 @@ types::firewall:
       - UNTRACKED
   '040 accept mdns v6':
     action: accept
-    destination: ff02::fb
+    # destination: ff02::fb
     dport: 5353
     proto: udp
     provider: ip6tables
