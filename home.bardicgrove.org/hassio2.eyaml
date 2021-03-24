@@ -125,52 +125,59 @@ selinux::selbooleans:
 
 # Extra firewall rules
 types::firewall:
-  '040 accept discovery services':
+  '040 accept multicast services':
     action: accept
-    destination: 224.0.0.251
-    dport:
-      # lpr (printer)
-      - 515
-      # ssdp (UPnP)
-      - 1900
-      # fjicl-tep-a
-      - 1901
-      # mdns
-      - 5353
-      # jetdirect
-      - 9100
-      # distinct
-      - 9999
-      # scp-config
-      - 10001
-      # ezmeeting-2
-      - 10101
-    proto: udp
-    state:
-      - NEW
-      - UNTRACKED
-  '040 accept discovery v6':
-    action: accept
-    destination: ff02::fb
-    dport:
-      # lpr (printer)
-      - 515
-      # ssdp (UPnP)
-      - 1900
-      # fjicl-tep-a
-      - 1901
-      # mdns
-      - 5353
-      # jetdirect
-      - 9100
-      # distinct
-      - 9999
-      # scp-config
-      - 10001
-      # ezmeeting-2
-      - 10101
-    proto: udp
+    pkttype: multicast
+  '040 accept multicast services v6':
     provider: ip6tables
-    state:
-      - NEW
-      - UNTRACKED
+    action: accept
+    pkttype: multicast
+  #'040 accept discovery services':
+  #  action: accept
+  #  destination: 224.0.0.251
+  #  dport:
+  #    # lpr (printer)
+  #    - 515
+  #    # ssdp (UPnP)
+  #    - 1900
+  #    # fjicl-tep-a
+  #    - 1901
+  #    # mdns
+  #    - 5353
+  #    # jetdirect
+  #    - 9100
+  #    # distinct
+  #    - 9999
+  #    # scp-config
+  #    - 10001
+  #    # ezmeeting-2
+  #    - 10101
+  #  proto: udp
+  #  state:
+  #    - NEW
+  #    - UNTRACKED
+  #'040 accept discovery v6':
+  #  action: accept
+  #  destination: ff02::fb
+  #  dport:
+  #    # lpr (printer)
+  #    - 515
+  #    # ssdp (UPnP)
+  #    - 1900
+  #    # fjicl-tep-a
+  #    - 1901
+  #    # mdns
+  #    - 5353
+  #    # jetdirect
+  #    - 9100
+  #    # distinct
+  #    - 9999
+  #    # scp-config
+  #    - 10001
+  #    # ezmeeting-2
+  #    - 10101
+  #  proto: udp
+  #  provider: ip6tables
+  #  state:
+  #    - NEW
+  #    - UNTRACKED
