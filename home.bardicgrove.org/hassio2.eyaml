@@ -130,6 +130,7 @@ types::firewall:
     destination: 224.0.0.251
     dport:
       - 1900
+      - 1901
       - 5353
       - 10101
     proto: udp
@@ -141,6 +142,7 @@ types::firewall:
     destination: ff02::fb
     dport:
       - 1900
+      - 1901
       - 5353
       - 10101
     proto: udp
