@@ -125,7 +125,7 @@ selinux::selbooleans:
 
 # Extra firewall rules
 types::firewall:
-  '40 accept mdns':
+  '040 accept mdns':
     action: accept
     destination: 224.0.0.251
     dport: 5353
@@ -133,7 +133,7 @@ types::firewall:
     state:
       - NEW
       - UNTRACKED
-  '40 accept mdns v6':
+  '040 accept mdns v6':
     action: accept
     destination: ff02::fb
     dport: 5353
