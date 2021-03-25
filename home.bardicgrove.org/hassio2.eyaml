@@ -136,9 +136,7 @@ types::firewall:
   #   proto: all
   '040 accept discovery services':
     action: accept
-    destination:
-      - 224.0.0.251
-      - 239.255.255.250
+    destination: 224.0.0.251
     dport:
       # lpr (printer)
       - 515
@@ -160,9 +158,9 @@ types::firewall:
     state:
       - NEW
       - UNTRACKED
-  '040 accept discovery v6':
+  '040 accept discovery services group2':
     action: accept
-    destination: ff02::fb
+    destination: 239.255.255.250
     dport:
       # lpr (printer)
       - 515
@@ -181,7 +179,32 @@ types::firewall:
       # ezmeeting-2
       - 10101
     proto: udp
-    provider: ip6tables
     state:
       - NEW
       - UNTRACKED
+  #
+  # '040 accept discovery v6':
+  #   action: accept
+  #   destination: ff02::fb
+  #   dport:
+  #     # lpr (printer)
+  #     - 515
+  #     # ssdp (UPnP)
+  #     - 1900
+  #     # fjicl-tep-a
+  #     - 1901
+  #     # mdns
+  #     - 5353
+  #     # jetdirect
+  #     - 9100
+  #     # distinct
+  #     - 9999
+  #     # scp-config
+  #     - 10001
+  #     # ezmeeting-2
+  #     - 10101
+  #   proto: udp
+  #   provider: ip6tables
+  #   state:
+  #     - NEW
+  #     - UNTRACKED
