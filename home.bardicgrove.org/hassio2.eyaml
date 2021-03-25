@@ -101,18 +101,18 @@ podman::subid:
     subuid: 2200000
     count: 65535
 
-podman::pods:
-  ha_pod:
-    user: homeassistant
-    flags:
-      net:
-        - bridge
-      publish:
-        - 8123:8123
-        - 1883:1883
-        - 1884:1884
-        - 8883:8883
-        - 8884:8884
+# podman::pods:
+#   ha_pod:
+#     user: homeassistant
+#     flags:
+#       net:
+#         - bridge
+#       publish:
+#         - 8123:8123
+#         - 1883:1883
+#         - 1884:1884
+#         - 8883:8883
+#         - 8884:8884
 
 podman::volumes:
   homeassistant_config:
@@ -123,32 +123,32 @@ podman::containers:
     user: homeassistant
     image: 'homeassistant/home-assistant:latest'
     flags:
-      # net:
-      #   - host
-      pod:
-        - ha_pod
-      # publish:
-      #   - '8123:8123'
+      net:
+        - host
+      # pod:
+      #   - ha_pod
+      publish:
+        - '8123:8123'
       volume: 'homeassistant_config:/config:rw'
     require:
       - Podman::Volume[homeassistant_config]
-      - Podman::Pod[ha_pod]
+      # - Podman::Pod[ha_pod]
   mosquitto:
     user: homeassistant
     image: 'homeassistant/aarch64-addon-mosquitto:latest'
     flags:
-      # net:
-      #   - host
-      pod:
-        - ha_pod
-      # publish:
-      #   - '1883:1883'
-      #   - '1884:1884'
-      #   - '8883:8883'
-      #   - '8884:8884'
+      net:
+        - host
+      # pod:
+      #   - ha_pod
+      publish:
+        - '1883:1883'
+        - '1884:1884'
+        - '8883:8883'
+        - '8884:8884'
     require:
-      - Podman::Pod[ha_pod]
-      # - Podman::Container[homeassistant]
+      # - Podman::Pod[ha_pod]
+      - Podman::Container[homeassistant]
 ### END PODMAN ###
 
 # selinux tunables #
@@ -168,16 +168,16 @@ types::firewall:
     action: accept
     pkttype: multicast
     proto: all
-  '040 forward multicast services':
-    chain: FORWARD
-    action: accept
-    pkttype: multicast
-    proto: all
-  '040 forward multicast services v6':
-    provider: ip6tables
-    action: accept
-    pkttype: multicast
-    proto: all
+  # '040 forward multicast services':
+  #   chain: FORWARD
+  #   action: accept
+  #   pkttype: multicast
+  #   proto: all
+  # '040 forward multicast services v6':
+  #   provider: ip6tables
+  #   action: accept
+  #   pkttype: multicast
+  #   proto: all
   # '040 accept discovery services':
   #   action: accept
   #   # destination: 224.0.0.251
