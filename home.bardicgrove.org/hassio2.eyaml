@@ -130,7 +130,7 @@ podman::containers:
       #   - ha_pod
       publish:
         - '8123:8123'
-      volume: 'homeassistant_config:/config:rw'
+      volume: 'homeassistant_config:/config:rw,z'
     require:
       - Podman::Volume[homeassistant_config]
       # - Podman::Pod[ha_pod]
@@ -147,9 +147,11 @@ podman::containers:
         - '1884:1884'
         - '8883:8883'
         - '8884:8884'
+      volume: 'homeassistant_config:/config:rw,z'
     require:
       # - Podman::Pod[ha_pod]
       - Podman::Container[homeassistant]
+      - Podman::Volume[homeassistant_config]
 ### END PODMAN ###
 
 # selinux tunables #
