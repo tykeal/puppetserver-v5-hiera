@@ -147,7 +147,7 @@ podman::containers:
       #   - '8883:8883'
       #   - '8884:8884'
     require:
-      - Podman::pod[ha_pod]
+      - Podman::Pod[ha_pod]
       # - Podman::Container[homeassistant]
 ### END PODMAN ###
 
