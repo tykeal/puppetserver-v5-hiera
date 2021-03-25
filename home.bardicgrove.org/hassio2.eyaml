@@ -110,8 +110,10 @@ podman::containers:
     user: homeassistant
     image: 'homeassistant/home-assistant:latest'
     flags:
+      net:
+        - host
       publish:
-        - '8123:8123'
+        - '127.0.0.1:8123:8123'
       volume: 'homeassistant_config:/config:rw'
     require:
       - Podman::Volume[homeassistant_config]
@@ -158,30 +160,31 @@ types::firewall:
     state:
       - NEW
       - UNTRACKED
-  '040 accept discovery services group2':
-    action: accept
-    destination: 239.255.255.250
-    dport:
-      # lpr (printer)
-      - 515
-      # ssdp (UPnP)
-      - 1900
-      # fjicl-tep-a
-      - 1901
-      # mdns
-      - 5353
-      # jetdirect
-      - 9100
-      # distinct
-      - 9999
-      # scp-config
-      - 10001
-      # ezmeeting-2
-      - 10101
-    proto: udp
-    state:
-      - NEW
-      - UNTRACKED
+  #
+  # '040 accept discovery services group2':
+  #   action: accept
+  #   destination: 239.255.255.250
+  #   dport:
+  #     # lpr (printer)
+  #     - 515
+  #     # ssdp (UPnP)
+  #     - 1900
+  #     # fjicl-tep-a
+  #     - 1901
+  #     # mdns
+  #     - 5353
+  #     # jetdirect
+  #     - 9100
+  #     # distinct
+  #     - 9999
+  #     # scp-config
+  #     - 10001
+  #     # ezmeeting-2
+  #     - 10101
+  #   proto: udp
+  #   state:
+  #     - NEW
+  #     - UNTRACKED
   #
   # '040 accept discovery v6':
   #   action: accept
