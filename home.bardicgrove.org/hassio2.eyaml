@@ -106,7 +106,7 @@ podman::pods:
     user: homeassistant
     flags:
       net:
-        - host
+        - bridge
       publish:
         - 8123:8123
         - 1883:1883
@@ -123,8 +123,8 @@ podman::containers:
     user: homeassistant
     image: 'homeassistant/home-assistant:latest'
     flags:
-      net:
-        - bridge
+      # net:
+      #   - host
       pod:
         - ha_pod
       # publish:
@@ -137,8 +137,8 @@ podman::containers:
     user: homeassistant
     image: 'homeassistant/aarch64-addon-mosquitto:latest'
     flags:
-      net:
-        - host
+      # net:
+      #   - host
       pod:
         - ha_pod
       # publish:
