@@ -138,24 +138,24 @@ types::firewall:
   #   proto: all
   '040 accept discovery services':
     action: accept
-    destination: 224.0.0.251
+    # destination: 224.0.0.251
     dport:
       # lpr (printer)
-      - 515
+      # - 515
       # ssdp (UPnP)
       - 1900
       # fjicl-tep-a
-      - 1901
+      # - 1901
       # mdns
       - 5353
       # jetdirect
-      - 9100
+      # - 9100
       # distinct
-      - 9999
+      # - 9999
       # scp-config
-      - 10001
+      # - 10001
       # ezmeeting-2
-      - 10101
+      # - 10101
     proto: udp
     state:
       - NEW
