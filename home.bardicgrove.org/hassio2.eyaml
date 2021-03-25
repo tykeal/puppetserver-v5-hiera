@@ -124,7 +124,7 @@ podman::containers:
     image: 'homeassistant/home-assistant:latest'
     flags:
       net:
-        - host
+        - bridge
       pod:
         - ha_pod
       # publish:
