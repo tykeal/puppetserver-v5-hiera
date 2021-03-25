@@ -127,39 +127,39 @@ selinux::selbooleans:
 
 # Extra firewall rules
 types::firewall:
-  # '040 accept multicast services':
-  #   action: accept
-  #   pkttype: multicast
-  #   proto: all
-  # '040 accept multicast services v6':
-  #   provider: ip6tables
-  #   action: accept
-  #   pkttype: multicast
-  #   proto: all
-  '040 accept discovery services':
+  '040 accept multicast services':
     action: accept
-    # destination: 224.0.0.251
-    dport:
-      # lpr (printer)
-      # - 515
-      # ssdp (UPnP)
-      - 1900
-      # fjicl-tep-a
-      # - 1901
-      # mdns
-      - 5353
-      # jetdirect
-      # - 9100
-      # distinct
-      # - 9999
-      # scp-config
-      # - 10001
-      # ezmeeting-2
-      # - 10101
-    proto: udp
-    state:
-      - NEW
-      - UNTRACKED
+    pkttype: multicast
+    proto: all
+  '040 accept multicast services v6':
+    provider: ip6tables
+    action: accept
+    pkttype: multicast
+    proto: all
+  # '040 accept discovery services':
+  #   action: accept
+  #   # destination: 224.0.0.251
+  #   dport:
+  #     # lpr (printer)
+  #     # - 515
+  #     # ssdp (UPnP)
+  #     - 1900
+  #     # fjicl-tep-a
+  #     # - 1901
+  #     # mdns
+  #     - 5353
+  #     # jetdirect
+  #     # - 9100
+  #     # distinct
+  #     # - 9999
+  #     # scp-config
+  #     # - 10001
+  #     # ezmeeting-2
+  #     # - 10101
+  #   proto: udp
+  #   state:
+  #     - NEW
+  #     - UNTRACKED
   #
   # '040 accept discovery services group2':
   #   action: accept
