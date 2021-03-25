@@ -101,6 +101,19 @@ podman::subid:
     subuid: 2200000
     count: 65535
 
+podman::pods:
+  ha_pod:
+    user: homeassistant
+    flags:
+      net:
+        - host
+      publish:
+        - 8123:8123
+        - 1883:1883
+        - 1884:1884
+        - 8883:8883
+        - 8884:8884
+
 podman::volumes:
   homeassistant_config:
     user: homeassistant
@@ -112,24 +125,30 @@ podman::containers:
     flags:
       net:
         - host
-      publish:
-        - '8123:8123'
+      pod:
+        - ha_pod
+      # publish:
+      #   - '8123:8123'
       volume: 'homeassistant_config:/config:rw'
     require:
       - Podman::Volume[homeassistant_config]
+      - Podman::Pod[ha_pod]
   mosquitto:
     user: homeassistant
     image: 'homeassistant/aarch64-addon-mosquitto:latest'
     flags:
       net:
         - host
-      publish:
-        - '1883:1883'
-        - '1884:1884'
-        - '8883:8883'
-        - '8884:8884'
+      pod:
+        - ha_pod
+      # publish:
+      #   - '1883:1883'
+      #   - '1884:1884'
+      #   - '8883:8883'
+      #   - '8884:8884'
     require:
-      - Podman::Container[homeassistant]
+      - Podman::pod[ha_pod]
+      # - Podman::Container[homeassistant]
 ### END PODMAN ###
 
 # selinux tunables #
