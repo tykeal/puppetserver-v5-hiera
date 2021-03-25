@@ -101,18 +101,19 @@ podman::subid:
     subuid: 2200000
     count: 65535
 
-# podman::pods:
-#   ha_pod:
-#     user: homeassistant
-#     flags:
-#       net:
-#         - bridge
-#       publish:
-#         - 8123:8123
-#         - 1883:1883
-#         - 1884:1884
-#         - 8883:8883
-#         - 8884:8884
+podman::pods:
+  ha_pod:
+    ensure: absent
+    user: homeassistant
+    flags:
+      net:
+        - bridge
+      publish:
+        - 8123:8123
+        - 1883:1883
+        - 1884:1884
+        - 8883:8883
+        - 8884:8884
 
 podman::volumes:
   homeassistant_config:
