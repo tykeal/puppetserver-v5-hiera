@@ -117,6 +117,17 @@ podman::containers:
       volume: 'homeassistant_config:/config:rw'
     require:
       - Podman::Volume[homeassistant_config]
+  mosquitto:
+    user: homeassistant
+    image: 'homeassistant/aarch64-addon-mosquitto:latest'
+    flags:
+      net:
+        - host
+      publish:
+        - '1883-1884:1883-1884'
+        - '8883-8884:8883-8884'
+    require:
+      - Podman::Container[homeassistant]
 ### END PODMAN ###
 
 # selinux tunables #
