@@ -119,7 +119,7 @@ podman::volumes:
   homeassistant_config:
     user: homeassistant
   mosquitto_data:
-    user: homeassitant
+    user: homeassistant
   ha_share:
     user: homeassistant
   ha_ssl:
