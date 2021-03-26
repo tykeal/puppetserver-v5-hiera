@@ -83,7 +83,12 @@ types::file:
     ensure: link
     # yamllint disable-line rule:line-length
     target: '/home/homeassistant/.local/share/containers/storage/volumes/homeassistant_config/_data'
-    require: 'Podman::Volume[homeassistant_config]'
+    require: Podman::Volume[homeassistant_config]
+  /home/homeassistant/supervisor:
+    ensure: link
+    # yamllint disable-line rule:line-length
+    target: '/home/homeassistant/.local/share/containers/storage/volumes/super_data/_data'
+    require: Podman::Volume[super_data]
   /etc/udev/rules.d/99-husbzb.rules:
     ensure: file
     owner: root
@@ -176,6 +181,9 @@ podman::containers:
     user: homeassistant
     image: homeassistant/aarch64-hassio-supervisor:latest
     flags:
+      env:
+        - 'SUPERVISOR_SHARE=/home/homeassistant/supervisor'
+        - 'SUPERVISOR_NAME=hassio_supervisor'
       volume:
         - '/run/dbus:/run/dbus:ro'
         - '/run/udev:/run/udev:ro'
