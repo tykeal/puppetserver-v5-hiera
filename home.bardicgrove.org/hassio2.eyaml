@@ -118,6 +118,13 @@ podman::pods:
 podman::volumes:
   homeassistant_config:
     user: homeassistant
+  mosquitto_data:
+    user: homeassitant
+  ha_share:
+    user: homeassistant
+  ha_ssl:
+    user: homeassistant
+
 
 podman::containers:
   homeassistant:
@@ -130,7 +137,10 @@ podman::containers:
       #   - ha_pod
       publish:
         - '8123:8123'
-      volume: 'homeassistant_config:/config:rw,z'
+      volume:
+        - 'homeassistant_config:/config:rw'
+        - 'ha_share:/share:rw,z'
+        - 'ha_ssl:/ssl:ro'
     require:
       - Podman::Volume[homeassistant_config]
       # - Podman::Pod[ha_pod]
@@ -138,6 +148,9 @@ podman::containers:
     user: homeassistant
     image: 'homeassistant/aarch64-addon-mosquitto:latest'
     flags:
+      env:
+        # yamllint disable-line rule:line-length
+        - ENC[GPG,hQEMA4nUKMUJFtKCAQgAlQuwoAe1tXA7dKmP+Qhc3VkQn4ZQPk3/tYrHRw7WzEK3hyOPcm/de74C7PZw+hLL56eyRCmvRq6M2Dm0rD0i7aQROXdiVuKM4f5vpSV491wmjmk0jwUpx3TlQVvXfsXW44NKyVd4HVMpyOvQliEeTnj/lsI1fbsgmGvzXNG5/8Yf7J4fXF+2viOdNOrcv2rEkrhiLam9WJmE4nmbjJmK6jOUYgjYMbcqvhvuQ9KokL42hxAhtA2oR96/pPzkqtAcneMAMSR05JczCE6ZoXelp0mk/KLVl9CvmKuV5N32TkZq0a06AU37SZKeiDTTSBpnkvVU5w7KYYYLZrxuWGa3RoUBDAPEqAo7p1ScpQEH/31zipNzfePCrT/W7sGole6s+iCMIao1Y2+4hK0gystBztHGAZ1HUPkjkNiEc19ZLDpbIsFKNY19Fbq9w0hGkuvALGLm8EderU7Qtb5dJdAIXNViURAuKh2RcAfNxtWXI+8F6w4EIK+KMjKNaLFgqYih5TARjig8c/5ltx15AdioE7IrGGDoRacoWV1Q2KeTi8zGEaMaYFbFF4MxItqWBbaZxTflpF8GGbzlrpNLr/nFrmQGnlj/EiXDEPH7/a10VOlPzGE7SRSNMo3s/7wok4piJjSFwP32qY5gNbiHJk7SiEJ+6ECaOcSHkNy+/ErDaZK/CFR8CjR6fbESfe/KgcjSwCoBDZZe8MFxudg0EfWvguh6zWLlsIjMwV4THLzBsCFcxXBdI33Z+PNAzncuxC+QIicx5C1iW6BnKjeEpmFkNSASV9VTbrkrFWWh90/DhWnRTB4r3ASd6NKnHrxgd9JN02XFWyf7wlL8RgGWq6fwy8p9clGRYcVae7X5X49i2IlCMng6tZMDwFX8hJuTH8twbflkaBYOhZHUpfjXOW5nz4+S8E62GHSxrTvNLsO7zX48NTGcRSrBqgKrrRUY55pYcZF4GsbwCeTeY/edUsi3Q2VD1aVVFZby6xmEZmG5szm/RZdVpLQiRaJa1TI=]
       net:
         - host
       # pod:
@@ -147,11 +160,16 @@ podman::containers:
         - '1884:1884'
         - '8883:8883'
         - '8884:8884'
-      volume: 'homeassistant_config:/config:rw,z'
+      volume:
+        - 'mosquito_data:/data:rw'
+        - 'ha_share:/share:rw,z'
+        - 'ha_ssl:/ssl:ro'
     require:
       # - Podman::Pod[ha_pod]
       - Podman::Container[homeassistant]
-      - Podman::Volume[homeassistant_config]
+      - Podman::Volume[mosquitto_data]
+      - Podman::Volume[ha_share]
+      - Podman::Volume[ha_ssl]
 ### END PODMAN ###
 
 # selinux tunables #
