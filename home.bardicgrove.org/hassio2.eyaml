@@ -161,7 +161,7 @@ podman::containers:
         - '8883:8883'
         - '8884:8884'
       volume:
-        - 'mosquito_data:/data:rw'
+        - 'mosquitto_data:/data:rw'
         - 'ha_share:/share:rw,z'
         - 'ha_ssl:/ssl:ro'
     require:
