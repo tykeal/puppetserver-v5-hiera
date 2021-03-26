@@ -124,6 +124,8 @@ podman::volumes:
     user: homeassistant
   ha_ssl:
     user: homeassistant
+  super_data:
+    user: homeassistant
 
 
 podman::containers:
@@ -170,6 +172,17 @@ podman::containers:
       - Podman::Volume[mosquitto_data]
       - Podman::Volume[ha_share]
       - Podman::Volume[ha_ssl]
+  supervisor:
+    user: homeassistant
+    image: homeassistant/aarch64-hassio-supervisor:latest
+    flags:
+      volume:
+        - '/run/dbus:/run/dbus:ro'
+        - '/run/udev:/run/udev:ro'
+        - '/etc/machine-id:/etc/machine-id:ro'
+        - 'super_data:/data:rw'
+    require:
+      - Podman::Volume[super_data]
 ### END PODMAN ###
 
 # selinux tunables #
