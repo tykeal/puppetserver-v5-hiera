@@ -12,7 +12,7 @@ filebucket:
 firewall::ensure_v6: 'running'
 
 # global puppet master server setting
-puppetserver: 'puppet'
+puppetserver: 'puppet.vancouver.bardicgrove.org'
 
 # global (main) puppet settings
 puppet::main:
