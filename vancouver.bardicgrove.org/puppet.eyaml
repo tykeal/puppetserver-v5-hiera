@@ -23,8 +23,8 @@ r10k::sources:
     remote: https://github.com/tykeal/puppetserver-v5-main.git
 
 # puppetdb pgsql overrides
-puppetdb::database::postgresql::manage_package_repo: false
-puppetdb::database::postgresql::postgres_version: '10'
+# puppetdb::database::postgresql::manage_package_repo: false
+# puppetdb::database::postgresql::postgres_version: '10'
 
 # acme / letsencrypt master setup
 acme::accounts:
