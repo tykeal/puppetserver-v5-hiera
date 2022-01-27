@@ -10,7 +10,7 @@ acme::certificates:
   'www.bardicgrove.org www.yul.bardicgrove.org webmail.bardicgrove.org webmail.yul.bardicgrove.org':
     use_account: "%{lookup('acme::certificate::use_account')}"
     use_profile: "%{lookup('acme::certificate::use_profile')}"
-    letsencrypt_ca: "%{lookup('acme::certificate::letsencrypt_ca')}"
+    ca: "%{lookup('acme::certificate::ca')}"
 
 # disable ocsp stapling, we're on fast rotation certs no need
 # plus postfix does not support it which causes problems if the certs
