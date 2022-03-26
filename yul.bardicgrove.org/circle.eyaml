@@ -8,7 +8,7 @@ acme::certificates:
   # www and webmail are both hosted from nginx so it needs to be SNI (SAN)
   # we also need to make sure that base domain is supported
   # yamllint disable-line rule:line-length
-  'www.bardicgrove.org www.yul.bardicgrove.org webmail.bardicgrove.org webmail.yul.bardicgrove.org bardicgrove.org':
+  'www.bardicgrove.org webmail.bardicgrove.org bardicgrove.org':
     use_account: "%{lookup('acme::certificate::use_account')}"
     use_profile: "%{lookup('acme::certificate::use_profile')}"
     ca: "%{lookup('acme::certificate::ca')}"
