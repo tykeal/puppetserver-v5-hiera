@@ -186,9 +186,15 @@ postfix::root_mail_recipient: 'tykeal'
 postfix::smtp_listen: all
 postfix::use_dovecot_lda: true
 postfix::master_entries:
-  # yamllint disable-line rule:line-length
+  # yamllint disable rule:line-length
   - 'spamassassin unix -     n       n     -         -       pipe user=spamassassin argv=/usr/bin/spamc -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}'
+  - 'smtp4        unix -     -       -     -         -       smtp -o inet_protocols=ipv4'
+  # yamllint enable
 postfix::master_submission: 'submission inet n - n - - smtpd'
+postfix::transports:
+  'gmail.com':
+    ensure: present
+    destination: smtp4
 
 # spamassassin
 spamassassin::pyzor_enabled: false
