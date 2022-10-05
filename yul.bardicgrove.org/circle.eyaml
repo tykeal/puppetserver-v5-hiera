@@ -276,6 +276,10 @@ spamass_milter::config::options:
 
 ### WEB ###
 
+nginx::mime_types_preserve_defaults: true
+nginx::mime_types:
+  'text/calendar': ics
+
 nginx::nginx_servers:
   'www.bardicgrove.org':
     add_header:
