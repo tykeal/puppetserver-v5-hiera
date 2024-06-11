@@ -12,7 +12,7 @@ filebucket:
 firewall::ensure_v6: 'running'
 
 # global puppet master server setting
-puppetserver: 'puppet.vancouver.bardicgrove.org'
+puppetserver: 'puppet2.vancouver.bardicgrove.org'
 
 # global (main) puppet settings
 puppet::main:
@@ -50,6 +50,8 @@ hosts::collect_all: false
 hosts::host_entries:
   'puppet.vancouver.bardicgrove.org':
     ip: '2601:1c2:4f03:1a72:302c:8dcc:d490:b8c6'
+  'puppet2.vancouver.bardicgrove.org':
+    ip: '2602:61:7889:a900:5054:ff:fe6a:d254'
     host_aliases:
       - 'puppet'
 
