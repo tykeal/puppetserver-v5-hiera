@@ -140,8 +140,6 @@ postfix::configs:
     value: '20480000'
   milter_default_action:
     value: 'accept'
-  mydestination:
-    value: '$myhostname, localhost.$mydomain, localhost, $mydomain'
   mydomain:
     value: 'bardicgrove.org'
   myhostname:
@@ -181,6 +179,7 @@ postfix::configs:
     value: /etc/acme.sh/keys/smtp.bardicgrove.org/private.key
   smtpd_tls_security_level:
     value: may
+postfix::mydestination: '$myhostname, localhost.$mydomain, localhost, $mydomain'
 postfix::mta: true
 postfix::myorigin: 'bardicgrove.org'
 postfix::relayhost: direct
