@@ -140,6 +140,8 @@ postfix::configs:
     value: '20480000'
   milter_default_action:
     value: 'accept'
+  mydestination:
+    value: '$myhostname, localhost.$mydomain, localhost, $mydomain'
   mydomain:
     value: 'bardicgrove.org'
   myhostname:
